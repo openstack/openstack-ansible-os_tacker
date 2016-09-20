@@ -1,0 +1,75 @@
+---
+# tacker horizon dashboard setup
+
+# tacker horizon depends on tacker client
+- name: Clone tacker client
+  git:
+    repo: "{{ tackerclient_git_url }}"
+    version: "{{ tacker_git_branch }}"
+    dest: /tmp/python-tackerclient
+    force: yes
+  register: tackerclient_git_clone
+  delegate_to: "{{ item }}"
+  with_items:
+    - "{{ groups['horizon_all'] }}"
+  until: tackerclient_git_clone|success
+  retries: 5
+  delay: 2
+  tags:
+    - tacker-horizon-install
+
+- name: Install tacker client into venv
+  command: python setup.py install
+  args:
+    chdir: /tmp/python-tackerclient
+    creates: /usr/local/bin/tacker
+  delegate_to: "{{ item }}"
+  with_items:
+    - "{{ groups['horizon_all'] }}"
+  tags:
+    - tacker-horizon-install
+
+- name: Clone tacker horizon source
+  git:
+    repo: "{{ tacker_horizon_git }}"
+    version: stable/liberty
+    dest: /tmp/python-tacker-horizon
+    force: yes
+  register: tackerhorizon_git_clone
+  delegate_to: "{{ item }}"
+  with_items:
+    - "{{ groups['horizon_all'] }}"
+  until: tackerhorizon_git_clone|success
+  retries: 5
+  delay: 2
+  tags:
+    - tacker-horizon-install
+
+#NOTE: not sure if this is the right way to do this
+
+- name: Install tacker horizon into venv
+  command: "{{ tacker_horizon_venv_bin }}/python setup.py install"
+  args:
+    chdir: /tmp/python-tacker-horizon
+    creates:
+      "{{ tacker_horizon_venv_bin }}/../lib/python2.7/site-packages/tacker_horizon"
+  delegate_to: "{{ item }}"
+  notify: Restart apache
+  with_items:
+    - "{{ groups['horizon_all'] }}"
+  tags:
+    - tacker-horizon-install
+
+- name: Enable tacker in openstack dashboard
+  command: cp openstack_dashboard_extensions/_80_nfv.py {{ tacker_horizon_enable_path }}/_80_nfv.py
+  args:
+    chdir: /tmp/python-tacker-horizon
+    creates: "{{ tacker_horizon_enable_path }}/_80_nfv.py"
+  delegate_to: "{{ item }}"
+  notify: Restart apache
+  with_items:
+    - "{{ groups['horizon_all'] }}"
+  tags:
+    - tacker-horizon-install
+
+

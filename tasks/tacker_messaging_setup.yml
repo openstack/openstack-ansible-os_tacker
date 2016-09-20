@@ -1,0 +1,27 @@
+---
+# tacker messaging setup
+
+
+- name: Ensure Rabbitmq vhost
+  rabbitmq_vhost:
+    name: "{{ tacker_rabbitmq_vhost }}"
+    state: "present"
+  delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+  tags:
+    - tacker-rabbitmq
+    - tacker-rabbitmq-vhost
+
+- name: Ensure rabbitmq user
+  rabbitmq_user:
+    user: "{{ tacker_rabbitmq_userid }}"
+    password: "{{ tacker_rabbitmq_password }}"
+    vhost: "{{ tacker_rabbitmq_vhost }}"
+    configure_priv: ".*"
+    read_priv: ".*"
+    write_priv: ".*"
+    state: "present"
+  delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+  tags:
+    - tacker-rabbitmq
+    - tacker-rabbitmq-user
+

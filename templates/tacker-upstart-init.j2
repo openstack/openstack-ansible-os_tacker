@@ -1,0 +1,41 @@
+# {{ ansible_managed }}
+
+# vim:set ft=upstart ts=2 et:
+
+description "{{ tacker_program_name }}"
+
+start on runlevel [2345]
+stop on runlevel [016]
+
+respawn
+respawn limit 10 5
+
+# Set the RUNBIN environment variable
+env RUNBIN="{{ tacker_bin }}/{{ tacker_program_name }}"
+
+# Change directory to service users home
+chdir "{{ tacker_system_user_home }}"
+
+# Pre start actions
+pre-start script
+  mkdir -p "/var/run/{{ tacker_program_name }}"
+  chown {{ tacker_system_user_name }}:{{ tacker_system_group_name }} "/var/run/{{ tacker_program_name }}"
+
+  mkdir -p "/var/lock/{{ tacker_program_name }}"
+  chown {{ tacker_system_user_name }}:{{ tacker_system_group_name }} "/var/lock/{{ tacker_program_name }}"
+
+end script
+
+# Post stop actions
+post-stop script
+  rm "/var/run/{{ tacker_program_name }}/{{ tacker_program_name }}.pid"
+end script
+
+# Run the start up job
+exec start-stop-daemon --start \
+                       --chuid {{ tacker_system_user_name }} \
+                       --make-pidfile \
+                       --pidfile /var/run/{{ tacker_program_name }}/{{ tacker_program_name }}.pid \
+                       --exec "{{ program_override|default('$RUNBIN') }}" \
+                       -- {{ program_config_options|default('') }} \
+                       --log-file=/var/log/tacker/{{ tacker_program_name }}.log

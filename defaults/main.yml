@@ -1,0 +1,158 @@
+---
+# (C)2016 Brocade Communications Systems, Inc.
+# 130 Holger Way, San Jose, CA 95134.
+# All rights reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+## Verbosity Options
+debug: False
+verbose: True
+
+# Set the package install state for distribution packages
+# Options are 'present' and 'latest'
+tacker_package_state: "latest"
+
+tacker_git_repo: https://git.openstack.org/openstack/tacker
+tacker_git_install_branch: master
+tacker_requirements_git_repo: https://git.openstack.org/openstack/requirements
+tacker_requirements_git_install_branch: master
+tacker_developer_mode: false
+tacker_developer_constraints:
+  - "git+{{ tacker_git_repo }}@{{ tacker_git_install_branch }}#egg=tacker"
+
+#tacker_venv_enabled: true
+
+# Name of the virtual env to deploy into
+tacker_venv_tag: untagged
+tacker_bin: "/openstack/venvs/tacker-{{ tacker_venv_tag }}/bin"
+#tacker_venv_bin: "/openstack/venvs/tacker-{{ tacker_venv_tag }}/bin"
+
+# Set the etc dir path where tacker is installed.
+#  This is used for role access to the db migrations.
+#  Example:
+#  tacker_etc_dir: "/usr/local/etc/tacker"
+tacker_etc_dir: "{{ tacker_bin | dirname }}/etc/tacker"
+
+tacker_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/tacker.tgz
+
+
+## System info
+tacker_system_user_name: tacker
+tacker_system_group_name: tacker
+tacker_system_shell: /bin/false
+tacker_system_comment: tacker system user
+tacker_system_user_home: "/var/lib/{{ tacker_system_user_name }}"
+
+
+## RabbitMQ info
+
+tacker_rabbitmq_userid: tacker
+tacker_rabbitmq_vhost: /tacker
+glance_rabbitmq_port: 5672
+glance_rabbitmq_servers: 127.0.0.1
+glance_rabbitmq_use_ssl: False
+
+## DB info
+tacker_galera_database: tacker
+tacker_galera_user: tacker
+
+tacker_role_name: admin
+tacker_bind_address: 0.0.0.0
+tacker_service_port: 8888
+tacker_program_name: tacker-server
+
+## Service Type and Data
+tacker_service_region: RegionOne
+tacker_service_name: tacker
+tacker_service_proto: http
+tacker_service_type: nfv-orchestration
+tacker_service_description: "tacker service"
+tacker_service_publicuri: "{{ tacker_service_publicuri_proto }}://{{ external_lb_vip_address }}:{{ tacker_service_port }}"
+tacker_service_publicurl: "{{ tacker_service_publicuri }}"
+tacker_service_internaluri: "{{ tacker_service_internaluri_proto }}://{{ internal_lb_vip_address }}:{{ tacker_service_port }}"
+tacker_service_internalurl: "{{ tacker_service_internaluri }}"
+tacker_service_adminuri: "{{ tacker_service_adminuri_proto }}://{{ internal_lb_vip_address }}:{{ tacker_service_port }}"
+tacker_service_adminurl: "{{ tacker_service_adminuri }}"
+tacker_service_registry_proto: "{{ tacker_service_proto }}"
+tacker_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(tacker_service_proto) }}"
+tacker_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(tacker_service_proto) }}"
+tacker_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(tacker_service_proto) }}"
+
+
+#NOTE:  move password to tests/test-vars.yml
+tacker_service_password: password
+
+## Keystone
+tacker_service_project_domain_id: default
+tacker_service_project_name: service
+tacker_service_user_domain_id: default
+tacker_service_user_name: tacker
+tacker_keystone_auth_plugin: password
+
+tacker_service_in_ldap: false
+
+# packages that must be installed before anything else
+tacker_requires_pip_packages:
+  - virtualenv
+  - virtualenv-tools
+  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
+
+## Common pip packages
+tacker_pip_packages:
+  - PyMySQL
+  - tacker
+  - mysql-python
+
+
+#NOTE: these default should be updated approprietly
+# tacker-horizon uses this
+tackerclient_git_url: https://github.com/openstack/python-tackerclient.git
+tacker_git_branch: "stable/liberty"
+
+#tacker_git_dest: "{{ tacker_system_user_home }}/tacker"
+
+# tacker horizon vars
+tacker_horizon_venv: "/openstack/venvs/horizon-{{ openstack_release }}"
+tacker_horizon_venv_bin: "{{ tacker_horizon_venv }}/bin"
+tacker_horizon_enable_path: "{{ tacker_horizon_venv }}/lib/python2.7/site-packages/openstack_dashboard/enabled"
+tacker_horizon_git: https://github.com/openstack/tacker-horizon.git
+
+
+## Service Names
+tacker_service_names:
+  - "tacker-server"
+
+tacker_config_options: --config-file {{ tacker_etc_dir }}/tacker.conf
+
+## tacker config
+tacker_heat_stack_retires: 60
+tacker_heat_stack_retry_wait: 5
+
+# heat service paramter for tacker.conf
+heat_service_adminurl: "{{ tacker_service_publicuri_proto }}://{{ external_lb_vip_address }}:8004/v1"
+
+
+# This variable is used by the repo_build process to determine
+# which host group to check for members of before building the
+# pip packages required by this role. The value is picked up
+# by the py_pkgs lookup.
+tacker_role_project_group: tacker_all
+
+## Tunable overrides
+tacker_tacker_conf_overrides: {}
+tacker_api_paste_ini_overrides: {}
+tacker_policy_overrides: {}
+tacker_rootwrap_overrides: {}
+
