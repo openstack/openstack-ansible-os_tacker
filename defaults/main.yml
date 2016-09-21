@@ -112,6 +112,7 @@ tacker_requires_pip_packages:
 ## Common pip packages
 tacker_pip_packages:
   - PyMySQL
+  - python-heatclient
   - tacker
   - mysql-python
 
