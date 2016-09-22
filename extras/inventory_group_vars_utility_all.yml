@@ -1,0 +1,4 @@
+# Python packages to be installed into the utility container
+utility_pip_packages:
+  - python-tackerclient
+
