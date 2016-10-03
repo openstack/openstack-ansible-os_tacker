@@ -4,3 +4,9 @@ tacker_git_repo: https://git.openstack.org/openstack/tacker
 tacker_git_install_branch: 3f4e899f79903a76ffc2562531012801afb6468e # HEAD of master as of 2016-09-16
 tacker_git_dest: "/opt/tacker_{{ tacker_git_install_branch | replace('/', '_') }}"
 tacker_git_project_group: tacker_all
+
+## Tacker Horizon
+tackerhorizon_git_repo: https://git.openstack.org/openstack/tacker-horizon
+tackerhorizon_git_install_branch:  79e99e762f2cef3a4474532135ab8ef19f9a459c  # HEAD of master as of 2016-09-20
+tackerhorizon_git_dest: "/opt/tackerhorizon_{{ tacker_git_install_branch | replace('/', '_') }}"
+tackerhorizon_git_project_group: tacker_all

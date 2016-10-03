@@ -1,0 +1,318 @@
+[DEFAULT]
+
+#
+# From tacker.common.config
+#
+
+# The host IP to bind to (string value)
+#bind_host = 0.0.0.0
+
+# The port to bind to (integer value)
+#bind_port = 9890
+
+# The API paste config file to use (string value)
+#api_paste_config = api-paste.ini
+
+# The path for API extensions (string value)
+#api_extensions_path =
+
+# The service plugins Tacker will use (list value)
+#service_plugins = nfvo,vnfm
+
+# The policy file to use (string value)
+#policy_file = policy.json
+
+# The type of authentication to use (string value)
+#auth_strategy = keystone
+
+# Allow the usage of the bulk API (boolean value)
+#allow_bulk = true
+
+# Allow the usage of the pagination (boolean value)
+#allow_pagination = false
+
+# Allow the usage of the sorting (boolean value)
+#allow_sorting = false
+
+# The maximum number of items returned in a single response, value was
+# 'infinite' or negative integer means no limit (string value)
+#pagination_max_limit = -1
+
+# The hostname Tacker is running on (string value)
+#host = aio1-tacker-container-c4f3e5cd
+
+# URL for connection to nova (string value)
+#nova_url = http://127.0.0.1:8774/v2
+
+# Username for connecting to nova in admin context (string value)
+#nova_admin_username = <None>
+
+# Password for connection to nova in admin context (string value)
+#nova_admin_password = <None>
+
+# The uuid of the admin nova tenant (string value)
+#nova_admin_tenant_id = <None>
+
+# Authorization URL for connecting to nova in admin context (string value)
+#nova_admin_auth_url = http://localhost:5000/v2.0
+
+# CA file for novaclient to verify server certificates (string value)
+#nova_ca_certificates_file = <None>
+
+# If True, ignore any SSL validation issues (boolean value)
+#nova_api_insecure = false
+
+# Name of nova region to use. Useful if keystone manages more than one region.
+# (string value)
+#nova_region_name = <None>
+
+# Where to store Tacker state files. This directory must be writable by the
+# agent. (string value)
+#state_path = /var/lib/tacker
+
+#
+# From tacker.service
+#
+
+# Seconds between running periodic tasks (integer value)
+#periodic_interval = 40
+
+# Number of separate worker processes for service (integer value)
+#api_workers = 0
+
+# Range of seconds to randomly delay when starting the periodic task scheduler
+# to reduce stampeding. (Disable by setting to 0) (integer value)
+#periodic_fuzzy_delay = 5
+
+#
+# From tacker.wsgi
+#
+
+# Number of backlog requests to configure the socket with (integer value)
+#backlog = 4096
+
+# Sets the value of TCP_KEEPIDLE in seconds for each server socket. Not
+# supported on OS X. (integer value)
+#tcp_keepidle = 600
+
+# Number of seconds to keep retrying to listen (integer value)
+#retry_until_window = 30
+
+# Max header line to accommodate large tokens (integer value)
+#max_header_line = 16384
+
+# Enable SSL on the API server (boolean value)
+#use_ssl = false
+
+# CA certificate file to use to verify connecting clients (string value)
+#ssl_ca_file = <None>
+
+# Certificate file to use when starting the server securely (string value)
+#ssl_cert_file = <None>
+
+# Private key file to use when starting the server securely (string value)
+#ssl_key_file = <None>
+
+
+[alarm_auth]
+
+#
+# From tacker.alarm_receiver
+#
+
+# User name for alarm monitoring (string value)
+#username = tacker
+
+# password for alarm monitoring (string value)
+#password = nomoresecret
+
+# project name for alarm monitoring (string value)
+#project_name = service
+
+# url for alarm monitoring (string value)
+#url = http://localhost:35357/v3
+
+
+[ceilometer]
+
+#
+# From tacker.vnfm.monitor_drivers.ceilometer.ceilometer
+#
+
+# Address which drivers use to trigger (string value)
+#host = aio1-tacker-container-c4f3e5cd
+
+# port number which drivers use to trigger (port value)
+# Minimum value: 0
+# Maximum value: 65535
+#port = 9890
+
+
+[monitor]
+
+#
+# From tacker.vnfm.monitor
+#
+
+# check interval for monitor (integer value)
+#check_intvl = 10
+
+
+[monitor_http_ping]
+
+#
+# From tacker.vnfm.monitor_drivers.http_ping.http_ping
+#
+
+# number of times to retry (integer value)
+#retry = 5
+
+# number of seconds to wait for a response (integer value)
+#timeout = 1
+
+# HTTP port number to send request (integer value)
+#port = 80
+
+
+[monitor_ping]
+
+#
+# From tacker.vnfm.monitor_drivers.ping.ping
+#
+
+# number of ICMP packets to send (string value)
+#count = 1
+
+# number of seconds to wait for a response (string value)
+#timeout = 1
+
+# number of seconds to wait between packets (string value)
+#interval = 1
+
+
+[nfvo]
+
+#
+# From tacker.nfvo.nfvo_plugin
+#
+
+# VIM driver for launching VNFs (list value)
+#vim_drivers = openstack
+
+# Interval to check for VIM health (integer value)
+#monitor_interval = 30
+
+
+[nfvo_vim]
+
+#
+# From tacker.vnfm.vim_client
+#
+
+# DEPRECATED: Default VIM for launching VNFs. This option is deprecated and
+# will be removed in Ocata release. (string value)
+# This option is deprecated for removal.
+# Its value may be silently ignored in the future.
+#default_vim = <None>
+
+
+[openstack_vim]
+
+#
+# From tacker.vnfm.infra_drivers.openstack.openstack
+#
+
+# Number of attempts to retry for stack creation/deletion (integer value)
+#stack_retries = 60
+
+# Wait time (in seconds) between consecutive stack create/delete retries
+# (integer value)
+#stack_retry_wait = 5
+
+# Flavor Extra Specs (dict value)
+#flavor_extra_specs =
+
+
+[openwrt]
+
+#
+# From tacker.vnfm.mgmt_drivers.openwrt.openwrt
+#
+
+# user name to login openwrt (string value)
+#user = root
+
+# password to login openwrt (string value)
+#password =
+
+
+[tacker]
+
+#
+# From tacker.vnfm.monitor
+#
+
+# Monitor driver to communicate with Hosting VNF/logical service instance
+# tacker plugin will use (list value)
+#monitor_driver = ping,http_ping
+
+# Alarm monitoring driver to communicate with Hosting VNF/logical service
+# instance tacker plugin will use (list value)
+#alarm_monitor_driver = ceilometer
+
+#
+# From tacker.vnfm.plugin
+#
+
+# MGMT driver to communicate with Hosting VNF/logical service instance tacker
+# plugin will use (list value)
+#mgmt_driver = noop,openwrt
+
+# Time interval to wait for VM to boot (integer value)
+#boot_wait = 30
+
+# Hosting vnf drivers tacker plugin will use (list value)
+#infra_driver = nova,heat,noop,openstack
+
+
+[tacker_heat]
+
+#
+# From tacker.vnfm.infra_drivers.heat.heat
+#
+
+# Number of attempts to retry for stack creation/deletion (integer value)
+#stack_retries = 60
+
+# Wait time (in seconds) between consecutive stack create/delete retries
+# (integer value)
+#stack_retry_wait = 5
+
+# Flavor Extra Specs (dict value)
+#flavor_extra_specs =
+
+
+[vim_keys]
+
+#
+# From tacker.nfvo.drivers.vim.openstack_driver
+#
+
+# Dir.path to store fernet keys. (string value)
+#openstack = /etc/tacker/vim/fernet_keys
+
+
+[vim_monitor]
+
+#
+# From tacker.nfvo.drivers.vim.openstack_driver
+#
+
+# number of ICMP packets to send (string value)
+#count = 1
+
+# number of seconds to wait for a response (string value)
+#timeout = 1
+
+# number of seconds to wait between packets (string value)
+#interval = 1

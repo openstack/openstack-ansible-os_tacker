@@ -59,10 +59,6 @@
   tags:
     - tacker-install
 
-#- include: tacker_init_common.yml
-  #tags:
-    #- tacker-install
-
 - include: tacker_db_setup.yml
   when: >
     inventory_hostname == groups['tacker_all'][0]

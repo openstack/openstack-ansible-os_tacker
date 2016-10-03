@@ -1,5 +1,7 @@
 ---
-# tacker horizon dashboard setup
+# temporary tacker horizon dashboard setup
+# tacker-horizon install should done by horizon role
+# and probably different than this :)
 
 # tacker horizon depends on tacker client
 - name: Clone tacker client
@@ -45,7 +47,15 @@
   tags:
     - tacker-horizon-install
 
-#NOTE: not sure if this is the right way to do this
+- name: Install tacker-horizon pip packages
+  pip:
+    name: "{{ tacker_requires_pip_packages | join(' ') }}"
+    state: latest
+    extra_args: "{{ pip_install_options_fact }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
 
 - name: Install tacker horizon into venv
   command: "{{ tacker_horizon_venv_bin }}/python setup.py install"
