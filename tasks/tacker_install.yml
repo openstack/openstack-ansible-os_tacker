@@ -69,13 +69,13 @@
     - not tacker_developer_mode | bool
   register: local_venv_stat
 
-#- name: Get remote venv checksum
-  #uri:
-    #url: "{{ tacker_venv_download_url | replace('tgz', 'checksum') }}"
-    #return_content: True
-  #when:
-    #- not tacker_developer_mode | bool
-  #register: remote_venv_checksum
+- name: Get remote venv checksum
+  uri:
+    url: "{{ tacker_venv_download_url | replace('tgz', 'checksum') }}"
+    return_content: True
+  when:
+    - not tacker_developer_mode | bool
+  register: remote_venv_checksum
 
 # TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
 #       a) allow us to remove force: yes
