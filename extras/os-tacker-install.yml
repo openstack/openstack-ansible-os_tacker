@@ -1,7 +1,5 @@
 ---
-# (C)2016 Brocade Communications Systems, Inc.
-# 130 Holger Way, San Jose, CA 95134.
-# All rights reserved.
+# Copyright 2017, SUSE LINUX GmbH.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,87 +13,52 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-- name: Install tacker server
-  hosts: tacker_server
-  #hosts: tacker_all
+# Start tacker service
+- name: Install the tacker components
+  hosts: tacker_all
+  gather_facts: "{{ gather_facts | default(True) }}"
   max_fail_percentage: 20
   user: root
   pre_tasks:
-    - name: Use the lxc-openstack aa profile
-      lxc_container:
-        name: "{{ container_name }}"
-        container_config:
-          - "lxc.aa_profile=lxc-openstack"
-      delegate_to: "{{ physical_host }}"
-      when: not is_metal | bool
-      register: container_config
-      tags:
-        - lxc-aa-profile
-    - name: Wait for container ssh
-      wait_for:
-        port: "22"
-        delay: "{{ ssh_delay }}"
-        search_regex: "OpenSSH"
-        host: "{{ ansible_ssh_host }}"
-      delegate_to: "{{ physical_host }}"
-      when: >
-            (container_config is defined and container_config | changed) or
-            (container_extra_config is defined and container_config | changed)
-      register: ssh_wait_check
-      until: ssh_wait_check | success
-      retries: 3
-      tags:
-        - ssh-wait
-    - name: Sort the rabbitmq servers
-      dist_sort:
-        value_to_lookup: "{{ container_name }}"
-        ref_list: "{{ groups['tacker_all'] }}"
-        src_list: "{{ rabbitmq_servers }}"
-      register: servers
-    - name: Set rabbitmq servers
-      set_fact:
-        rabbitmq_servers: "{{ servers.sorted_list }}"
-    - name: Create log dir
-      file:
-        path: "{{ item.path }}"
-        state: directory
-      with_items:
-        - { path: "/openstack/log/{{ inventory_hostname }}-tacker" }
-      when: is_metal | bool
-      tags:
-        - tacker-logs
-        - tacker-log-dirs
-    - name: Create log aggregation links
-      file:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-        state: "{{ item.state }}"
-        force: "yes"
-      with_items:
-        - { src: "/openstack/log/{{ inventory_hostname }}-tacker", dest: "/var/log/tacker", state: "link" }
-      when: is_metal | bool
-      tags:
-        - tacker-logs
+    - include: common-tasks/os-lxc-container-setup.yml
+    - include: common-tasks/rabbitmq-vhost-user.yml
+      static: no
+      vars:
+        user: "{{ tacker_rabbitmq_userid }}"
+        password: "{{ tacker_rabbitmq_password }}"
+        vhost: "{{ tacker_rabbitmq_vhost }}"
+        _rabbitmq_host_group: "{{ tacker_rabbitmq_host_group }}"
+      when:
+        - inventory_hostname == groups['tacker_all'][0]
+        - groups[tacker_rabbitmq_host_group] | length > 0
+    - include: common-tasks/os-log-dir-setup.yml
+      vars:
+        log_dirs:
+          - src: "/openstack/log/{{ inventory_hostname }}-tacker"
+            dest: "/var/log/tacker"
+    - include: common-tasks/mysql-db-user.yml
+      static: no
+      vars:
+        user_name: "{{ tacker_galera_user }}"
+        password: "{{ tacker_container_mysql_password }}"
+        login_host: "{{ tacker_galera_address }}"
+        db_name: "{{ tacker_galera_database }}"
+      when: inventory_hostname == groups['tacker_all'][0]
+    - include: common-tasks/package-cache-proxy.yml
   roles:
     - role: "os_tacker"
-      tacker_galera_address: "{{ galera_address }}"
-      tacker_venv_tag: "{{ openstack_release }}"
-      tacker_venv_download_url: "{{ openstack_repo_url }}/venvs/{{ openstack_release }}/{{ ansible_distribution | lower }}/tacker-{{ openstack_release }}-{{ ansible_architecture | lower }}.tgz"
+    - role: "openstack_openrc"
       tags:
-        - "os-tacker"
-    - { role: "openstack_openrc", tags: [ "openstack-openrc" ] }
+        - openrc
     - role: "rsyslog_client"
       rsyslog_client_log_rotate_file: tacker_log_rotate
       rsyslog_client_log_dir: "/var/log/tacker"
       rsyslog_client_config_name: "99-tacker-rsyslog-client.conf"
       tags:
-        - "tacker-rsyslog-client"
-        - "rsyslog-client"
-    - role: "system_crontab_coordination"
-      tags:
-        - "system-crontab-coordination"
+        - rsyslog
   vars:
-    galera_address: "{{ internal_lb_vip_address }}"
-    ansible_hostname: "{{ container_name }}"
     is_metal: "{{ properties.is_metal|default(false) }}"
+    tacker_galera_address: "{{ internal_lb_vip_address }}"
+  environment: "{{ deployment_environment_variables | default({}) }}"
+  tags:
+    - tacker
