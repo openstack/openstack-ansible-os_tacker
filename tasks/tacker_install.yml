@@ -75,28 +75,17 @@
     return_content: True
   when:
     - not tacker_developer_mode | bool
-  register: remote_venv_checksum
+  register: tacker_venv_checksum
 
-# TODO: When project moves to ansible 2 we can pass this a sha256sum which will:
-#       a) allow us to remove force: yes
-#       b) allow the module to calculate the checksum of dest file which would
-#          result in file being downloaded only if provided and dest sha256sum
-#          checksums differ
 - name: Attempt venv download
   get_url:
     url: "{{ tacker_venv_download_url }}"
     dest: "/var/cache/{{ tacker_venv_download_url | basename }}"
-    force: yes
+    checksum: "sha1:{{ tacker_venv_checksum.content | trim }}"
   ignore_errors: true
-  register: get_venv
+  register: tacker_get_venv
   when:
     - not tacker_developer_mode | bool
-    - (local_venv_stat.stat.exists == False or
-        {{ local_venv_stat.stat.checksum is defined and local_venv_stat.stat.checksum != remote_venv_checksum.content | trim }})
-
-- name: Set tacker get_venv fact
-  set_fact:
-    tacker_get_venv: "{{ get_venv }}"
 
 - name: Remove existing venv
   file:
