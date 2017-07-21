@@ -23,6 +23,7 @@ verbose: True
 # Set the package install state for distribution packages
 # Options are 'present' and 'latest'
 tacker_package_state: "latest"
+tacker_pip_package_state: "latest"
 
 tacker_git_repo: https://git.openstack.org/openstack/tacker
 tacker_git_install_branch: master

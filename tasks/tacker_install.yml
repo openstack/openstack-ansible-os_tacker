@@ -51,12 +51,10 @@
   when:
     - not tacker_developer_mode | bool
 
-# TODO(mbuil): Fix the ansible lint
-# Hint: latest should be a var.
 - name: Install requires pip packages
   pip:
     name: "{{ tacker_requires_pip_packages | join(' ') }}"
-    state: latest
+    state: "{{ tacker_pip_package_state }}"
     extra_args: "{{ pip_install_options_fact }}"
   register: install_packages
   until: install_packages|success
@@ -115,12 +113,10 @@
   notify:
     - Restart tacker services
 
-# TODO(mbuil): Fix the ansible lint
-# hint: latest should be a var.
 - name: Install pip packages
   pip:
     name: "{{ tacker_pip_packages | join(' ') }}"
-    state: latest
+    state: "{{ tacker_pip_package_state }}"
     virtualenv: "{{ tacker_bin | dirname }}"
     virtualenv_site_packages: "no"
     extra_args: "{{ pip_install_options_fact }}"

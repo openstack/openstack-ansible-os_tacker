@@ -13,14 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# TODO(mbuil): Fix the ansible lint
 - name: Perform a tacker DB sync
   command: "{{ tacker_bin }}/tacker-db-manage
     --config-file {{ tacker_etc_dir }}/tacker.conf upgrade head"
   become: yes
   become_user: "{{ tacker_system_user_name }}"
+  changed_when: False
   tags:
     - tacker-db-sync
     - tacker-setup
     - tacker-command-bin
-    - skip_ansible_lint
