@@ -1,5 +1,5 @@
 ---
-# Copyright 2017, SUSE Linux GmbH
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,17 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Setup the host
-- include: common/test-setup-host.yml
-
-# Install RabbitMQ/MariaDB
-- include: common/test-install-infra.yml
-
-# Install Keystone
-- include: common/test-install-keystone.yml
-
-# Install Tacker
-- include: test-install-tacker.yml
-
-# Test Tacker
-- include: test-tacker-functional.yml
+- name: Ensure tacker APIs are reachable
+  hosts: tacker_all
+  user: root
+  gather_facts: false
+  tasks:
+    - name: check tacker api
+      uri:
+        url: "http://localhost:{{ item }}"
+        status_code: 200
+      register: result
+      until: result.status == 200
+      retries: 5
+      delay: 10
+      with_items:
+        - 8888

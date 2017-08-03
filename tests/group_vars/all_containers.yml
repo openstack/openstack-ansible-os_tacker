@@ -1,5 +1,5 @@
 ---
-# Copyright 2017, SUSE Linux GmbH
+# Copyright 2016, Rackspace US, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,17 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Setup the host
-- include: common/test-setup-host.yml
-
-# Install RabbitMQ/MariaDB
-- include: common/test-install-infra.yml
-
-# Install Keystone
-- include: common/test-install-keystone.yml
-
-# Install Tacker
-- include: test-install-tacker.yml
-
-# Test Tacker
-- include: test-tacker-functional.yml
+container_name: "{{ inventory_hostname }}"
+container_networks:
+  management_address:
+    address: "{{ ansible_host }}"
+    bridge: "br-mgmt"
+    interface: "eth1"
+    netmask: "255.255.255.0"
+    type: "veth"
+physical_host: localhost
+properties:
+  service_name: "{{ inventory_hostname }}"
