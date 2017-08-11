@@ -135,7 +135,7 @@ heat_service_adminurl: "{{ tacker_service_publicuri_proto }}://{{ external_lb_vi
 #NOTE: these default should be updated approprietly
 # tacker-horizon uses this
 tackerclient_git_url: https://github.com/openstack/python-tackerclient.git
-tacker_git_branch: "stable/liberty"
+tacker_git_branch: "master"
 
 # tacker horizon vars
 tacker_horizon_venv: "/openstack/venvs/horizon-{{ openstack_release }}"

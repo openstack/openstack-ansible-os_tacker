@@ -410,7 +410,7 @@ default_vim = VIM0
 #openstack = /etc/tacker/vim/fernet_keys
 [tacker_nova]
 # parameters for novaclient to talk to nova
-region_name = {{ service_region }}
+region_name = {{ tacker_service_region }}
 project_domain_id = {{ nova_service_project_domain_id }}
 project_name = {{ nova_service_project_name }}
 user_domain_id = {{ nova_service_user_domain_id }}
