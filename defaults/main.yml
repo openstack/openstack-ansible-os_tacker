@@ -71,7 +71,7 @@ tacker_galera_user: tacker
 
 tacker_role_name: admin
 tacker_bind_address: 0.0.0.0
-tacker_service_port: 8888
+tacker_service_port: 9890
 tacker_program_name: tacker-server
 
 ## Service Type and Data
