@@ -26,9 +26,9 @@ tacker_package_state: "latest"
 tacker_pip_package_state: "latest"
 
 tacker_git_repo: https://git.openstack.org/openstack/tacker
-tacker_git_install_branch: stable/pike
+tacker_git_install_branch: master
 tacker_requirements_git_repo: https://git.openstack.org/openstack/requirements
-tacker_requirements_git_install_branch: stable/pike
+tacker_requirements_git_install_branch: master
 tacker_developer_mode: false
 tacker_developer_constraints:
   - "git+{{ tacker_git_repo }}@{{ tacker_git_install_branch }}#egg=tacker"
@@ -136,7 +136,7 @@ heat_service_adminurl: "{{ tacker_service_publicuri_proto }}://{{ external_lb_vi
 #NOTE: these default should be updated approprietly
 # tacker-horizon uses this
 tackerclient_git_url: https://github.com/openstack/python-tackerclient.git
-tacker_git_branch: "stable/pike"
+tacker_git_branch: "master"
 
 # tacker horizon vars
 tacker_horizon_venv: "/openstack/venvs/horizon-{{ openstack_release }}"
