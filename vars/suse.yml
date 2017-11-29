@@ -1,5 +1,4 @@
----
-# Copyright 2017, Rackspace US, Inc.
+# Copyright 2017, SUSE Linux GmbH
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,15 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- project:
-    name: openstack/openstack-ansible-os_tacker
-    check:
-      jobs:
-        - openstack-ansible-linters
-        - openstack-ansible-functional-opensuse-423
-        - openstack-ansible-functional-ubuntu-xenial
-    gate:
-      jobs:
-        - openstack-ansible-linters
-        - openstack-ansible-functional-opensuse-423
-        - openstack-ansible-functional-ubuntu-xenial
+tacker_distro_packages:
+  - rsync
+  - git-core

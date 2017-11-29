@@ -15,9 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: tacker_install_apt.yml
-  when:
-    - ansible_pkg_mgr == 'apt'
+- name: Install tacker packages
+  package:
+    name: "{{ tacker_distro_packages }}"
+    state: "{{ tacker_package_state }}"
 
 - name: Create developer mode constraint file
   copy:
