@@ -36,7 +36,6 @@ galaxy_info:
     - python
 
 dependencies:
-  - pip_install
   - role: apt_package_pinning
     when:
       - ansible_pkg_mgr == 'apt'
