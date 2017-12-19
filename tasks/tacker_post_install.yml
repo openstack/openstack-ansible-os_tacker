@@ -41,22 +41,32 @@
     config_overrides: "{{ item.config_overrides }}"
     config_type: "{{ item.config_type }}"
   with_items:
-    - src: "etc/tacker/tacker.conf.j2"
+    - src: "tacker.conf.j2"
       dest: "{{ tacker_etc_dir }}/tacker.conf"
       config_overrides: "{{ tacker_tacker_conf_overrides }}"
       config_type: "ini"
-    - src: "etc/tacker/api-paste.ini.j2"
+    - src: "api-paste.ini.j2"
       dest: "{{ tacker_etc_dir }}/api-paste.ini"
       config_overrides: "{{ tacker_api_paste_ini_overrides }}"
       config_type: "ini"
-    - src: "etc/tacker/rootwrap.conf.j2"
-      dest: "{{ tacker_etc_dir}}/rootwrap.conf"
+    - src: "rootwrap.conf.j2"
+      dest: "{{ tacker_etc_dir }}/rootwrap.conf"
       config_overrides: "{{ tacker_rootwrap_overrides }}"
       config_type: "ini"
-    - src: "etc/tacker/policy.json.j2"
+    - src: "policy.json.j2"
       dest: "{{ tacker_etc_dir }}/policy.json"
       config_overrides: "{{ tacker_policy_overrides }}"
       config_type: "json"
   notify:
     - Restart tacker services
 
+- name: Copy rootwrap filters
+  copy:
+    src: "{{ item }}"
+    dest: "{{ tacker_etc_dir }}/rootwrap.d/"
+    owner: "root"
+    group: "root"
+  with_fileglob:
+    - rootwrap.d/*
+  notify:
+    - Restart tacker services

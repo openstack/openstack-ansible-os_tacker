@@ -35,14 +35,21 @@
   file:
     path: "{{ item.path }}"
     state: directory
-    owner: "{{ item.owner|default(tacker_system_user_name) }}"
-    group: "{{ item.group|default(tacker_system_group_name) }}"
-    mode: "{{ item.mode|default('0755') }}"
+    owner: "{{ item.owner | default(tacker_system_user_name) }}"
+    group: "{{ item.group | default(tacker_system_group_name) }}"
+    mode: "{{ item.mode | default('0755') }}"
   with_items:
-    - { path: "/openstack", mode: "0755", owner: "root", group: "root" }
-    - { path: "/etc/tacker" }
-    - { path: "/var/cache/tacker" }
-    - { path: "{{ tacker_system_user_home }}" }
+    - path: "/openstack"
+      mode: "0755"
+      owner: "root"
+      group: "root"
+    - path: "{{ tacker_etc_dir }}"
+    - path: "/var/cache/tacker"
+    - path: "{{ tacker_system_user_home }}"
+    - path: "{{ tacker_etc_dir }}/rootwrap.d"
+      owner: "root"
+      group: "root"
+
 
 #- name: Create tacker venv dir
   #file:
