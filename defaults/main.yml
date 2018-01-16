@@ -109,7 +109,6 @@ tacker_service_in_ldap: false
 # packages that must be installed before anything else
 tacker_requires_pip_packages:
   - virtualenv
-  - virtualenv-tools
   - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 ## Common pip packages
