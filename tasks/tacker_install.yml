@@ -136,6 +136,7 @@
   shell: |
     find {{ tacker_bin }} -name \*.pyc -delete
     sed -si '1s/^.*python.*$/#!{{ tacker_bin | replace ('/','\/') }}\/python/' {{ tacker_bin }}/*
+    virtualenv {{ tacker_bin | dirname }}
   tags:
     - skip_ansible_lint
   when:
