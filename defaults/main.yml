@@ -44,7 +44,7 @@ tacker_bin: "/openstack/venvs/tacker-{{ tacker_venv_tag }}/bin"
 #  This is used for role access to the db migrations.
 #  Example:
 #  tacker_etc_dir: "/usr/local/etc/tacker"
-tacker_etc_dir: "{{ tacker_bin | dirname }}/etc/tacker"
+tacker_etc_dir: "/etc/tacker"
 
 tacker_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/tacker.tgz
 
