@@ -24,7 +24,7 @@
       vhost_name: "{{ tacker_rabbitmq_vhost }}"
       user_name: "{{ tacker_rabbitmq_userid }}"
       user_password: "{{ tacker_rabbitmq_password }}"
-      when: "{{ groups['rabbitmq_all'] is defined }}"
+      when: groups['rabbitmq_all'] is defined
     - include: common/create-grant-db.yml
       db_name: "{{ tacker_galera_database }}"
       db_password: "{{ tacker_container_mysql_password }}"
