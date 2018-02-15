@@ -27,18 +27,13 @@ tacker_pip_package_state: "latest"
 
 tacker_git_repo: https://git.openstack.org/openstack/tacker
 tacker_git_install_branch: "stable/queens"
-tacker_requirements_git_repo: https://git.openstack.org/openstack/requirements
-tacker_requirements_git_install_branch: "stable/queens"
 tacker_developer_mode: false
 tacker_developer_constraints:
   - "git+{{ tacker_git_repo }}@{{ tacker_git_install_branch }}#egg=tacker"
 
-#tacker_venv_enabled: true
-
 # Name of the virtual env to deploy into
 tacker_venv_tag: untagged
 tacker_bin: "/openstack/venvs/tacker-{{ tacker_venv_tag }}/bin"
-#tacker_venv_bin: "/openstack/venvs/tacker-{{ tacker_venv_tag }}/bin"
 
 # Set the etc dir path where tacker is installed.
 #  This is used for role access to the db migrations.
@@ -46,6 +41,9 @@ tacker_bin: "/openstack/venvs/tacker-{{ tacker_venv_tag }}/bin"
 #  tacker_etc_dir: "/usr/local/etc/tacker"
 tacker_etc_dir: "/etc/tacker"
 
+# venv_download, even when true, will use the fallback method of building the
+# venv from scratch if the venv download fails.
+tacker_venv_download: "{{ not tacker_developer_mode | bool }}"
 tacker_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/tacker.tgz
 
 

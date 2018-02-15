@@ -15,10 +15,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: Install tacker packages
+- name: Install distro packages
   package:
     name: "{{ tacker_distro_packages }}"
     state: "{{ tacker_package_state }}"
+    update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
+    cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
+  register: install_packages
+  until: install_packages|success
+  retries: 5
+  delay: 2
 
 - name: Create developer mode constraint file
   copy:
@@ -30,65 +36,34 @@
   when:
     - tacker_developer_mode | bool
 
-- name: Clone requirements git repository
-  git:
-    repo: "{{ tacker_requirements_git_repo }}"
-    dest: "/opt/requirements"
-    clone: yes
-    update: yes
-    version: "{{ tacker_requirements_git_install_branch }}"
-  when:
-    - tacker_developer_mode | bool
-
-- name: Add constraints to pip_install_options fact for developer mode
-  set_fact:
-    pip_install_options_fact: "{{ pip_install_options|default('') }} --constraint /opt/developer-pip-constraints.txt --constraint /opt/requirements/upper-constraints.txt"
-  when:
-    - tacker_developer_mode | bool
-
-- name: Set pip_install_options_fact when not in developer mode
-  set_fact:
-    pip_install_options_fact: "{{ pip_install_options|default('') }}"
-  when:
-    - not tacker_developer_mode | bool
-
 - name: Install requires pip packages
   pip:
-    name: "{{ tacker_requires_pip_packages | join(' ') }}"
+    name: "{{ tacker_requires_pip_packages }}"
     state: "{{ tacker_pip_package_state }}"
-    extra_args: "{{ pip_install_options_fact }}"
+    extra_args: >-
+      {{ tacker_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
+      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+      {{ pip_install_options | default('') }}
   register: install_packages
   until: install_packages|success
   retries: 5
   delay: 2
-  tags:
-    - skip_ansible_lint
 
-- name: Get local venv checksum
-  stat:
-    path: "/var/cache/{{ tacker_venv_download_url | basename }}"
-    get_md5: False
-  when:
-    - not tacker_developer_mode | bool
-  register: local_venv_stat
-
-- name: Get remote venv checksum
+- name: Retrieve checksum for venv download
   uri:
     url: "{{ tacker_venv_download_url | replace('tgz', 'checksum') }}"
-    return_content: True
-  when:
-    - not tacker_developer_mode | bool
+    return_content: yes
   register: tacker_venv_checksum
+  when: tacker_venv_download | bool
 
 - name: Attempt venv download
   get_url:
     url: "{{ tacker_venv_download_url }}"
     dest: "/var/cache/{{ tacker_venv_download_url | basename }}"
     checksum: "sha1:{{ tacker_venv_checksum.content | trim }}"
-  ignore_errors: true
   register: tacker_get_venv
   when:
-    - not tacker_developer_mode | bool
+    - tacker_venv_download | bool
 
 - name: Remove existing venv
   file:
@@ -102,6 +77,8 @@
     path: "{{ tacker_bin | dirname }}"
     state: directory
   register: tacker_venv_dir
+  when:
+    - tacker_get_venv | changed
 
 - name: Unarchive pre-built venv
   unarchive:
@@ -109,28 +86,36 @@
     dest: "{{ tacker_bin | dirname }}"
     copy: "no"
   when:
-    - not tacker_developer_mode | bool
-    - tacker_get_venv | changed or tacker_venv_dir | changed
+    - tacker_get_venv | changed
   notify:
     - Restart tacker services
 
 - name: Install pip packages
   pip:
-    name: "{{ tacker_pip_packages | join(' ') }}"
+    name: "{{ tacker_pip_packages }}"
     state: "{{ tacker_pip_package_state }}"
     virtualenv: "{{ tacker_bin | dirname }}"
     virtualenv_site_packages: "no"
-    extra_args: "{{ pip_install_options_fact }}"
+    extra_args: >-
+      {{ tacker_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
+      {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
+      {{ pip_install_options | default('') }}
   register: install_packages
   until: install_packages|success
   retries: 5
   delay: 2
   when:
-    - tacker_get_venv | failed or tacker_developer_mode | bool
+    - tacker_get_venv | failed or tacker_get_venv | skipped
   notify:
     - Restart tacker services
-  tags:
-    - skip_ansible_lint
+
+- name: Remove python from path first (CentOS, openSUSE)
+  file:
+    path:  "{{ tacker_bin | dirname }}/bin/python2.7"
+    state: "absent"
+  when:
+    - ansible_pkg_mgr in ['yum', 'dnf', 'zypper']
+    - tacker_get_venv | changed
 
 - name: Update virtualenv path
   shell: |
@@ -140,5 +125,11 @@
   tags:
     - skip_ansible_lint
   when:
-    - not tacker_developer_mode | bool
-    - tacker_get_venv | success
+    - tacker_get_venv | changed
+
+- name: Record the venv tag deployed
+  ini_file:
+    dest: "/etc/ansible/facts.d/openstack_ansible.fact"
+    section: tacker
+    option: venv_tag
+    value: "{{ tacker_venv_tag }}"
