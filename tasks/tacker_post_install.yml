@@ -15,22 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#- name: Get tacker command path
-  #command: which {{ tacker_program_name }}
-  #register: tacker_command_path
-  #when:
-    #- not tacker_venv_enabled | bool
-  #tags:
-    #- tacker-command-bin
-
-#- name: Set tacker command path
-  #set_fact:
-    #tacker_bin: "{{ tacker_command_path.stdout | dirname }}"
-  #when:
-    #- not tacker_venv_enabled | bool
-  #tags:
-    #- tacker-command-bin
-
 - name: Drop tacker Config(s)
   config_template:
     src: "{{ item.src }}"
