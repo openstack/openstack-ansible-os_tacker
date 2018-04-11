@@ -21,6 +21,7 @@
     write_priv: ".*"
     state: "present"
   delegate_to: "{{ groups['rabbitmq_all'][0] }}"
+  no_log: true
   tags:
     - tacker-rabbitmq
     - tacker-rabbitmq-user
