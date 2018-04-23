@@ -31,6 +31,7 @@
   until: add_service|success
   retries: 5
   delay: 2
+  no_log: True
 
 # Create an admin user
 - name: Ensure tacker user
@@ -49,6 +50,7 @@
   until: add_service|success
   retries: 5
   delay: 10
+  no_log: True
 
 # Add a role to the user
 - name: Ensure tacker user to admin role
@@ -67,6 +69,7 @@
   until: add_service|success
   retries: 5
   delay: 10
+  no_log: True
 
 # Create an endpoint
 - name: Ensure tacker endpoint
@@ -91,3 +94,4 @@
   until: add_service|success
   retries: 5
   delay: 10
+  no_log: True
