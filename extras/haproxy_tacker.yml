@@ -1,9 +1,10 @@
-  - service:
-      haproxy_service_name: tacker_server
-      haproxy_backend_nodes: "{{ groups['tacker_server'] | default([]) }}"
-      haproxy_port: 9890
-      haproxy_balance_type: http
-      haproxy_backend_options:
-        - "forwardfor"
-        - "httpchk"
-        - "httplog"
+---
+- service:
+    haproxy_service_name: tacker_server
+    haproxy_backend_nodes: "{{ groups['tacker_server'] | default([]) }}"
+    haproxy_port: 9890
+    haproxy_balance_type: http
+    haproxy_backend_options:
+      - "forwardfor"
+      - "httpchk"
+      - "httplog"
