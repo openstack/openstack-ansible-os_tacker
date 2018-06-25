@@ -113,6 +113,7 @@ tacker_requires_pip_packages:
 tacker_pip_packages:
   - mysql-python
   - networking-sfc
+  - osprofiler
   - PyMySQL
   - python-heatclient
   - python-tackerclient
@@ -161,4 +162,3 @@ tacker_tacker_conf_overrides: {}
 tacker_api_paste_ini_overrides: {}
 tacker_policy_overrides: {}
 tacker_rootwrap_overrides: {}
-
