@@ -64,6 +64,8 @@ glance_rabbitmq_servers: 127.0.0.1
 glance_rabbitmq_use_ssl: False
 
 ## Database info
+tacker_db_setup_host: "{{ ('galera_all' in groups) | ternary(groups['galera_all'][0], 'localhost') }}"
+tacker_galera_address: "{{ galera_address | default('127.0.0.1') }}"
 tacker_galera_database: tacker
 tacker_galera_user: tacker
 tacker_galera_use_ssl: "{{ galera_use_ssl | default(False) }}"
