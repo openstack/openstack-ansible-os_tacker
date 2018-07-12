@@ -20,6 +20,11 @@
 debug: False
 verbose: True
 
+# Set the host which will execute the shade modules
+# for the service setup. The host must already have
+# clouds.yaml properly configured.
+tacker_service_setup_host: "{{ openstack_service_setup_host | default('localhost') }}"
+
 # Set the package install state for distribution packages
 # Options are 'present' and 'latest'
 tacker_package_state: "latest"
@@ -105,11 +110,6 @@ tacker_service_user_name: tacker
 tacker_keystone_auth_plugin: password
 
 tacker_service_in_ldap: false
-
-# packages that must be installed before anything else
-tacker_requires_pip_packages:
-  - virtualenv
-  - python-keystoneclient # Keystoneclient needed to OSA keystone lib
 
 ## Common pip packages
 tacker_pip_packages:
