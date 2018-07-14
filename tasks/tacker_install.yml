@@ -22,7 +22,7 @@
     update_cache: "{{ (ansible_pkg_mgr in ['apt', 'zypper']) | ternary('yes', omit) }}"
     cache_valid_time: "{{ (ansible_pkg_mgr == 'apt') | ternary(cache_timeout, omit) }}"
   register: install_packages
-  until: install_packages|success
+  until: install_packages is success
   retries: 5
   delay: 2
 
@@ -45,7 +45,7 @@
       {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
       {{ pip_install_options | default('') }}
   register: install_packages
-  until: install_packages|success
+  until: install_packages is success
   retries: 5
   delay: 2
 
@@ -70,7 +70,7 @@
     path: "{{ tacker_bin | dirname }}"
     state: absent
   when:
-    - tacker_get_venv | changed
+    - tacker_get_venv  is changed
 
 - name: Create tacker venv dir
   file:
@@ -78,7 +78,7 @@
     state: directory
   register: tacker_venv_dir
   when:
-    - tacker_get_venv | changed
+    - tacker_get_venv  is changed
 
 - name: Unarchive pre-built venv
   unarchive:
@@ -86,7 +86,7 @@
     dest: "{{ tacker_bin | dirname }}"
     copy: "no"
   when:
-    - tacker_get_venv | changed
+    - tacker_get_venv  is changed
   notify:
     - Restart tacker services
 
@@ -101,7 +101,7 @@
       {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''),'') }}
       {{ pip_install_options | default('') }}
   register: install_packages
-  until: install_packages|success
+  until: install_packages is success
   retries: 5
   delay: 2
   when:
@@ -115,7 +115,7 @@
     state: "absent"
   when:
     - ansible_pkg_mgr in ['yum', 'dnf', 'zypper']
-    - tacker_get_venv | changed
+    - tacker_get_venv  is changed
 
 # NOTE(odyssey4me):
 # We reinitialize the venv to ensure that the right
@@ -136,7 +136,7 @@
   tags:
     - skip_ansible_lint
   when:
-    - tacker_get_venv | changed
+    - tacker_get_venv  is changed
 
 - name: Record the venv tag deployed
   ini_file:
