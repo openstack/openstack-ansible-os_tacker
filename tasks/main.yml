@@ -40,23 +40,23 @@
   tags:
     - always
 
-- include: tacker_pre_install.yml
+- include_tasks: tacker_pre_install.yml
   tags:
     - tacker-install
-- include: tacker_install.yml
-  tags:
-    - tacker-install
-
-- include: tacker_install.yml
+- include_tasks: tacker_install.yml
   tags:
     - tacker-install
 
-- include: tacker_post_install.yml
+- include_tasks: tacker_install.yml
+  tags:
+    - tacker-install
+
+- include_tasks: tacker_post_install.yml
   tags:
     - tacker-install
     - tacker-config
 
-- include: tacker_init.yml
+- include_tasks: tacker_init.yml
   tags:
     - tacker-install
 
@@ -91,7 +91,7 @@
     - tacker-install
 
 #NOTE: comment for now
-#- include: tacker_horizon.yml
+#- include_tasks: tacker_horizon.yml
   #when: >
     #inventory_hostname == groups['tacker_all'][0]
   #tags:
