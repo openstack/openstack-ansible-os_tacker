@@ -14,16 +14,21 @@
 # limitations under the License.
 
 tacker_service_tenant_name: service
-tacker_rabbitmq_port: "{{ rabbitmq_port }}"
-tacker_rabbitmq_use_ssl: "{{ rabbitmq_use_ssl }}"
-tacker_rabbitmq_servers: "{{ rabbitmq_servers }}"
-tacker_rabbitmq_host_group: "{{ rabbitmq_host_group }}"
+tacker_oslomsg_rpc_port: "{{ oslomsg_rpc_port }}"
+tacker_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl }}"
+tacker_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers }}"
+tacker_oslomsg_rpc_host_group: "{{ oslomsg_rpc_host_group }}"
+tacker_oslomsg_notify_port: "{{ oslomsg_notify_port }}"
+tacker_oslomsg_notify_use_ssl: "{{ oslomsg_notify_use_ssl }}"
+tacker_oslomsg_notify_servers: "{{ oslomsg_notify_servers }}"
+tacker_oslomsg_notify_host_group: "{{ oslomsg_notify_host_group }}"
 tacker_service_publicuri: "{{ tacker_service_proto }}://{{ hostvars[groups['tacker_all'][0]]['ansible_host'] }}:{{ tacker_service_port }}"
 tacker_service_adminurl: "{{ tacker_service_proto }}://{{ hostvars[groups['tacker_all'][0]]['ansible_host'] }}:{{ tacker_service_port }}"
 tacker_service_adminuri: "{{ tacker_service_proto }}://{{ hostvars[groups['tacker_all'][0]]['ansible_host'] }}:{{ tacker_service_port }}"
 tacker_aodh_enabled: false
 tacker_gnocchi_enabled: false
-tacker_rabbitmq_password: "secrete"
+tacker_oslomsg_rpc_password: "secrete"
+tacker_oslomsg_notify_password: "{{ tacker_oslomsg_rpc_password }}"
 tacker_service_password: "secrete"
 tacker_container_mysql_password: "secrete"
 tacker_developer_mode: true

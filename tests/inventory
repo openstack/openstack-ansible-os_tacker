@@ -7,6 +7,12 @@ tacker1
 infra1
 tacker1
 
+[oslomsg_rpc_all]
+infra1
+
+[oslomsg_notify_all]
+infra1
+
 [rabbitmq_all]
 infra1
 

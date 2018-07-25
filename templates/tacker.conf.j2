@@ -4,6 +4,8 @@
 verbose = {{ verbose }}
 debug = {{ debug }}
 
+# oslo.messaging rpc transport
+transport_url = {{ tacker_oslomsg_rpc_transport }}://{% for host in tacker_oslomsg_rpc_servers.split(',') %}{{ tacker_oslomsg_rpc_userid }}:{{ tacker_oslomsg_rpc_password }}@{{ host }}:{{ tacker_oslomsg_rpc_port }}{% if not loop.last %},{% else %}/{{ tacker_oslomsg_rpc_vhost }}{% if (tacker_oslomsg_rpc_use_ssl | lower) | bool %}?ssl=1{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
 
 # Where to store Tacker state files.  This directory must be writable by the
 # user executing the agent.
@@ -103,3 +105,9 @@ monitor_driver = ping, http_ping
 
 [vim_keys]
 openstack = {{ tacker_etc_dir }}/vim/fernet_keys
+
+[oslo_messaging_rabbit]
+ssl = {{ tacker_oslomsg_notify_use_ssl | bool }}
+
+[oslo_messaging_notifications]
+transport_url = {{ tacker_oslomsg_notify_transport }}://{% for host in tacker_oslomsg_notify_servers.split(',') %}{{ tacker_oslomsg_notify_userid }}:{{ tacker_oslomsg_notify_password }}@{{ host }}:{{ tacker_oslomsg_notify_port }}{% if not loop.last %},{% else %}/{{ tacker_oslomsg_notify_vhost }}{% if (tacker_oslomsg_notify_use_ssl | lower) | bool %}?ssl=1{% else %}?ssl=0{% endif %}{% endif %}{% endfor %}
