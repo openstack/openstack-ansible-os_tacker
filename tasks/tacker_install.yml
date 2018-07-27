@@ -57,7 +57,7 @@
     path: "{{ tacker_bin | dirname }}"
     state: absent
   when:
-    - tacker_get_venv  is changed
+    - tacker_get_venv is changed
 
 - name: Create tacker venv dir
   file:
@@ -65,7 +65,7 @@
     state: directory
   register: tacker_venv_dir
   when:
-    - tacker_get_venv  is changed
+    - tacker_get_venv is changed
 
 - name: Unarchive pre-built venv
   unarchive:
@@ -73,7 +73,7 @@
     dest: "{{ tacker_bin | dirname }}"
     copy: "no"
   when:
-    - tacker_get_venv  is changed
+    - tacker_get_venv is changed
   notify:
     - Restart tacker services
 
@@ -116,7 +116,7 @@
     state: "absent"
   when:
     - ansible_pkg_mgr in ['yum', 'dnf', 'zypper']
-    - tacker_get_venv  is changed
+    - tacker_get_venv is changed
 
 # NOTE(odyssey4me):
 # We reinitialize the venv to ensure that the right
@@ -137,7 +137,7 @@
   tags:
     - skip_ansible_lint
   when:
-    - tacker_get_venv  is changed
+    - tacker_get_venv is changed
 
 - name: Record the venv tag deployed
   ini_file:

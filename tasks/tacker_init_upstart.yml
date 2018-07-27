@@ -28,6 +28,6 @@
 
 - name: Reload init scripts
   command: initctl reload-configuration
-  when: upstart_init  is changed
+  when: upstart_init is changed
   notify:
     - Restart tacker services
