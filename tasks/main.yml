@@ -60,15 +60,33 @@
   tags:
     - tacker-install
 
+- include_tasks: mq_setup.yml
+  when:
+    - inventory_hostname == groups['tacker_all'][0]
+  with_items:
+    - oslomsg_setup_host: "{{ tacker_oslomsg_rpc_setup_host }}"
+      oslomsg_userid: "{{ tacker_oslomsg_rpc_userid }}"
+      oslomsg_password: "{{ tacker_oslomsg_rpc_password }}"
+      oslomsg_vhost: "{{ tacker_oslomsg_rpc_vhost }}"
+      oslomsg_transport: "{{ tacker_oslomsg_rpc_transport }}"
+    - oslomsg_setup_host: "{{ tacker_oslomsg_notify_setup_host }}"
+      oslomsg_userid: "{{ tacker_oslomsg_notify_userid }}"
+      oslomsg_password: "{{ tacker_oslomsg_notify_password }}"
+      oslomsg_vhost: "{{ tacker_oslomsg_notify_vhost }}"
+      oslomsg_transport: "{{ tacker_oslomsg_notify_transport }}"
+  no_log: true
+  tags:
+    - tacker-config
+
 - include: tacker_db_setup.yml
-  when: >
-    inventory_hostname == groups['tacker_all'][0]
+  when:
+    - inventory_hostname == groups['tacker_all'][0]
   tags:
     - tacker-install
 
 - include: tacker_service_setup.yml
-  when: >
-    inventory_hostname == groups['tacker_all'][0]
+  when:
+    - inventory_hostname == groups['tacker_all'][0]
   tags:
     - tacker-install
 
