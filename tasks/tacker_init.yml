@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- include: tacker_init_common.yml
+- include_tasks: tacker_init_common.yml
   vars:
     program_name: "{{ tacker_program_name }}"
     service_name: "{{ tacker_service_name }}"
