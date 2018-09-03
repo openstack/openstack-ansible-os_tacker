@@ -24,6 +24,8 @@
     daemon_reload: "{{ (ansible_service_mgr == 'systemd') | ternary('yes', omit) }}"
   with_items: "{{ tacker_service_names }}"
   failed_when: false
+  listen:
+    - "venv changed"
 
 - name: Restart apache
   service:
