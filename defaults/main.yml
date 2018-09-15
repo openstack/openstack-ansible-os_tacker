@@ -145,7 +145,6 @@ tacker_service_in_ldap: false
 
 ## Common pip packages
 tacker_pip_packages:
-  - mysql-python
   - networking-sfc
   - osprofiler
   - PyMySQL
