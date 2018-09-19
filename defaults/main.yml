@@ -18,7 +18,6 @@
 
 ## Verbosity Options
 debug: False
-verbose: True
 
 # Set the host which will execute the shade modules
 # for the service setup. The host must already have
