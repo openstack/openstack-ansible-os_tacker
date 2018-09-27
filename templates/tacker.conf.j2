@@ -103,6 +103,7 @@ mgmt_driver = noop,openwrt
 monitor_driver = ping, http_ping
 
 [vim_keys]
+use_barbican = {{ barbican_keys_backend | bool }}
 openstack = {{ tacker_etc_dir }}/vim/fernet_keys
 
 [oslo_messaging_rabbit]

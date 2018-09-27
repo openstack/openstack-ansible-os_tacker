@@ -129,6 +129,8 @@ tacker_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(
 tacker_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(tacker_service_proto) }}"
 tacker_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(tacker_service_proto) }}"
 
+## Barbican service
+barbican_keys_backend: false
 
 #NOTE:  move password to tests/test-vars.yml
 tacker_service_password: password
