@@ -165,24 +165,6 @@ tacker_heat_stack_retry_wait: 5
 # heat service paramter for tacker.conf
 heat_service_adminurl: "{{ tacker_service_publicuri_proto }}://{{ external_lb_vip_address }}:8004/v1"
 
-#NOTE: these default should be updated approprietly
-# tacker-horizon uses this
-tackerclient_git_url: https://github.com/openstack/python-tackerclient.git
-tacker_git_branch: "master"
-
-# tacker horizon vars
-tacker_horizon_venv: "/openstack/venvs/horizon-{{ openstack_release }}"
-tacker_horizon_venv_bin: "{{ tacker_horizon_venv }}/bin"
-tacker_horizon_enable_path: "{{ tacker_horizon_venv }}/lib/python2.7/site-packages/openstack_dashboard/enabled"
-tacker_horizon_git: https://github.com/openstack/tacker-horizon.git
-
-
-tacker_horizon_dashboard_disable: "False"
-tacker_horizon_pip_packages:
-  - python-tackerclient
-
-
-
 # This variable is used by the repo_build process to determine
 # which host group to check for members of before building the
 # pip packages required by this role. The value is picked up

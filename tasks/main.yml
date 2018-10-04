@@ -90,13 +90,5 @@
   tags:
     - tacker-install
 
-#NOTE: comment for now
-#- include_tasks: tacker_horizon.yml
-  #when: >
-    #inventory_hostname == groups['tacker_all'][0]
-  #tags:
-    #- tacker-install
-    #- tacker-horizon
-
 - name: Flush handlers
   meta: flush_handlers
