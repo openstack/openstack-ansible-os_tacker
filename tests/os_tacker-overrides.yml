@@ -19,5 +19,4 @@ tacker_service_adminuri: "{{ tacker_service_proto }}://{{ hostvars[groups['tacke
 tacker_oslomsg_rpc_password: "{{ oslomsg_rpc_password }}"
 tacker_service_password: "secrete"
 tacker_container_mysql_password: "secrete"
-tacker_developer_mode: true
 tacker_galera_address: "{{ test_galera_host }}"
