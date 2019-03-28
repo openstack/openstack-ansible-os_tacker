@@ -48,19 +48,11 @@ bind_port = {{ tacker_service_port }}
 #
 # service_plugins =
 # Example: service_plugins = router,firewall,lbaas,vpnaas,metering
-service_plugins = vnfm,nfvo
+service_plugins = nfvo,vnfm
 
 # The strategy to be used for auth.
 # Supported values are 'keystone'(default), 'noauth'.
 auth_strategy = keystone
-
-# Notification_driver can be defined multiple times
-# Do nothing driver
-# notification_driver = tacker.openstack.common.notifier.no_op_notifier
-# Logging driver
-# notification_driver = tacker.openstack.common.notifier.log_notifier
-# RPC driver.
-notification_driver = tacker.openstack.common.notifier.rpc_notifier
 
 [agent]
 # Use "sudo tacker-rootwrap /etc/tacker/rootwrap.conf" to use the real

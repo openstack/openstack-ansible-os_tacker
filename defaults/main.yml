@@ -35,20 +35,12 @@ tacker_pip_package_state: "latest"
 
 tacker_git_repo: https://git.openstack.org/openstack/tacker
 tacker_git_install_branch: master
-tacker_developer_mode: false
-tacker_developer_constraints:
+tacker_upper_constraints_url: "{{ requirements_git_url | default('https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?h=' ~ requirements_git_install_branch | default('master')) }}"
+tacker_git_constraints:
   - "git+{{ tacker_git_repo }}@{{ tacker_git_install_branch }}#egg=tacker"
+  - "--constraint {{ tacker_upper_constraints_url }}"
 
-# TODO(odyssey4me):
-# This can be simplified once all the roles are using
-# python_venv_build. We can then switch to using a
-# set of constraints in pip.conf inside the venv,
-# perhaps prepared by giving a giving a list of
-# constraints to the role.
-tacker_pip_install_args: >-
-  {{ tacker_developer_mode | ternary(pip_install_developer_constraints | default('--constraint /opt/developer-pip-constraints.txt'), '') }}
-  {{ (pip_install_upper_constraints is defined) | ternary('--constraint ' + pip_install_upper_constraints | default(''), '') }}
-  {{ pip_install_options | default('') }}
+tacker_pip_install_args: "{{ pip_install_options | default('') }}"
 
 # Name of the virtual env to deploy into
 tacker_venv_tag: "{{ venv_tag | default('untagged') }}"
@@ -59,12 +51,6 @@ tacker_bin: "/openstack/venvs/tacker-{{ tacker_venv_tag }}/bin"
 #  Example:
 #  tacker_etc_dir: "/usr/local/etc/tacker"
 tacker_etc_dir: "/etc/tacker"
-
-# venv_download, even when true, will use the fallback method of building the
-# venv from scratch if the venv download fails.
-tacker_venv_download: "{{ not tacker_developer_mode | bool }}"
-tacker_venv_download_url: http://127.0.0.1/venvs/untagged/ubuntu/tacker.tgz
-
 
 ## System info
 tacker_system_user_name: tacker
@@ -118,7 +104,7 @@ tacker_program_name: tacker-server
 
 ## Service Type and Data
 tacker_service_region: RegionOne
-tacker_service_name: tacker
+tacker_service_name: tacker-server
 tacker_service_proto: http
 tacker_service_type: nfv-orchestration
 tacker_service_description: "tacker service"
@@ -157,12 +143,8 @@ tacker_pip_packages:
   - python-tackerclient
   - tacker
 
-
-## Service Names
-tacker_service_names:
-  - "tacker-server"
-
 tacker_config_options: --config-file {{ tacker_etc_dir }}/tacker.conf
+tacker_init_config_overrides: {}
 
 ## tacker config
 tacker_heat_stack_retires: 60
