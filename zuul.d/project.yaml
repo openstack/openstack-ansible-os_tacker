@@ -14,7 +14,18 @@
 
 - project:
     templates:
-      - openstack-ansible-role-jobs
       - check-requirements
+      - openstack-ansible-linters
       - publish-openstack-docs-pti
       - release-notes-jobs-python3
+    check:
+      jobs:
+        - openstack-ansible-deploy-aio_metal_tacker-centos-7
+        - openstack-ansible-deploy-aio_metal_tacker-ubuntu-bionic
+    gate:
+      jobs:
+        - openstack-ansible-deploy-aio_metal_tacker-centos-7
+        - openstack-ansible-deploy-aio_metal_tacker-ubuntu-bionic
+    experimental:
+      jobs:
+        - openstack-ansible-deploy-aio_metal_tacker-opensuse-150
