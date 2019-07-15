@@ -27,6 +27,38 @@
   tags:
     - always
 
+- import_tasks: db_setup.yml
+  when:
+    - inventory_hostname == groups['tacker_all'][0]
+  vars:
+    _oslodb_setup_host: "{{ tacker_db_setup_host }}"
+    _oslodb_databases:
+      - name: "{{ tacker_galera_database }}"
+        users:
+          - username: "{{ tacker_galera_user }}"
+            password: "{{ tacker_container_mysql_password }}"
+  tags:
+    - common-db
+    - tacker-config
+
+- import_tasks: mq_setup.yml
+  when:
+    - inventory_hostname == groups['tacker_all'][0]
+  vars:
+    _oslomsg_rpc_setup_host: "{{ tacker_oslomsg_rpc_setup_host }}"
+    _oslomsg_rpc_userid: "{{ tacker_oslomsg_rpc_userid }}"
+    _oslomsg_rpc_password: "{{ tacker_oslomsg_rpc_password }}"
+    _oslomsg_rpc_vhost: "{{ tacker_oslomsg_rpc_vhost }}"
+    _oslomsg_rpc_transport: "{{ tacker_oslomsg_rpc_transport }}"
+    _oslomsg_notify_setup_host: "{{ tacker_oslomsg_notify_setup_host }}"
+    _oslomsg_notify_userid: "{{ tacker_oslomsg_notify_userid }}"
+    _oslomsg_notify_password: "{{ tacker_oslomsg_notify_password }}"
+    _oslomsg_notify_vhost: "{{ tacker_oslomsg_notify_vhost }}"
+    _oslomsg_notify_transport: "{{ tacker_oslomsg_notify_transport }}"
+  tags:
+    - common-mq
+    - tacker-config
+
 - import_tasks: tacker_pre_install.yml
   tags:
     - tacker-install
@@ -76,25 +108,7 @@
     - tacker-install
     - tacker-config
 
-- import_tasks: mq_setup.yml
-  when:
-    - inventory_hostname == groups['tacker_all'][0]
-  vars:
-    _oslomsg_rpc_setup_host: "{{ tacker_oslomsg_rpc_setup_host }}"
-    _oslomsg_rpc_userid: "{{ tacker_oslomsg_rpc_userid }}"
-    _oslomsg_rpc_password: "{{ tacker_oslomsg_rpc_password }}"
-    _oslomsg_rpc_vhost: "{{ tacker_oslomsg_rpc_vhost }}"
-    _oslomsg_rpc_transport: "{{ tacker_oslomsg_rpc_transport }}"
-    _oslomsg_notify_setup_host: "{{ tacker_oslomsg_notify_setup_host }}"
-    _oslomsg_notify_userid: "{{ tacker_oslomsg_notify_userid }}"
-    _oslomsg_notify_password: "{{ tacker_oslomsg_notify_password }}"
-    _oslomsg_notify_vhost: "{{ tacker_oslomsg_notify_vhost }}"
-    _oslomsg_notify_transport: "{{ tacker_oslomsg_notify_transport }}"
-  tags:
-    - common-mq
-    - tacker-config
-
-- import_tasks: tacker_db_setup.yml
+- import_tasks: tacker_db_sync.yml
   when:
     - inventory_hostname == groups['tacker_all'][0]
   tags:
