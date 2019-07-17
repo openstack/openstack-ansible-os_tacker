@@ -21,7 +21,4 @@ cache_timeout: 600
 tacker_distro_packages:
   - rsync
   - git
-  #- remove after testing
-  - python-pip
-  #- remove after testing
-  - python-mysqldb
+  - libsystemd-dev

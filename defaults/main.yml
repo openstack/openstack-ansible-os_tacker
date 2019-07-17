@@ -141,6 +141,7 @@ tacker_pip_packages:
   - PyMySQL
   - python-heatclient
   - python-tackerclient
+  - systemd-python
   - tacker
 
 tacker_config_options: --config-file {{ tacker_etc_dir }}/tacker.conf
