@@ -114,7 +114,32 @@
   tags:
     - tacker-install
 
-- import_tasks: tacker_service_setup.yml
+- import_tasks: service_setup.yml
+  vars:
+    _service_adminuri_insecure: "{{ keystone_service_adminuri_insecure }}"
+    _service_in_ldap: "{{ tacker_service_in_ldap }}"
+    _service_setup_host: "{{ tacker_service_setup_host }}"
+    _service_setup_host_python_interpreter: "{{ tacker_service_setup_host_python_interpreter }}"
+    _service_project_name: "{{ tacker_service_project_name }}"
+    _service_region: "{{ tacker_service_region }}"
+    _service_users:
+      - name: "{{ tacker_service_user_name }}"
+        password: "{{ tacker_service_password }}"
+        role: "{{ tacker_role_name }}"
+    _service_endpoints:
+      - service: "{{ tacker_service_name }}"
+        interface: "public"
+        url: "{{ tacker_service_publicurl }}"
+      - service: "{{ tacker_service_name }}"
+        interface: "internal"
+        url: "{{ tacker_service_internalurl }}"
+      - service: "{{ tacker_service_name }}"
+        interface: "admin"
+        url: "{{ tacker_service_adminurl }}"
+    _service_catalog:
+      - name: "{{ tacker_service_name }}"
+        type: "{{ tacker_service_type }}"
+        description: "{{ tacker_service_description }}"
   when:
     - inventory_hostname == groups['tacker_all'][0]
   tags:
