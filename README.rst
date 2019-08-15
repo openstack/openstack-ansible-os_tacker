@@ -14,7 +14,7 @@ The project source code repository is located at:
   https://git.openstack.org/cgit/openstack/openstack-ansible-os_heat/
 
 The project source code repository is located at:
-  https://git.openstack.org/cgit/openstack/openstack-ansible-os_tacker
+  https://opendev.org/openstack/openstack-ansible-os_tacker
 
 The project home is at:
   https://launchpad.net/openstack-ansible
