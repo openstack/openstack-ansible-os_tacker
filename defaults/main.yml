@@ -19,6 +19,9 @@
 ## Verbosity Options
 debug: False
 
+#python venv executable
+tacker_venv_python_executable: "{{ openstack_venv_python_executable | default('python2') }}"
+
 # Enable/Disable Ceilometer
 tacker_ceilometer_enabled: False
 

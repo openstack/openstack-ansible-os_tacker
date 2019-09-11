@@ -67,6 +67,7 @@
   import_role:
     name: "python_venv_build"
   vars:
+    venv_python_executable: "{{ tacker_venv_python_executable }}"
     venv_build_constraints: "{{ tacker_git_constraints }}"
     venv_install_destination_path: "{{ tacker_bin | dirname }}"
     venv_install_distro_package_list: "{{ tacker_distro_packages }}"
