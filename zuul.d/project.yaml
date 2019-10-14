@@ -20,7 +20,6 @@
     check:
       jobs:
         - openstack-ansible-linters
-        - openstack-ansible-functional-opensuse-423
         - openstack-ansible-functional-ubuntu-xenial
         - openstack-ansible-tacker-ssl-nv
     experimental:
@@ -29,5 +28,4 @@
     gate:
       jobs:
         - openstack-ansible-linters
-        - openstack-ansible-functional-opensuse-423
         - openstack-ansible-functional-ubuntu-xenial
