@@ -30,4 +30,4 @@
         - openstack-ansible-deploy-aio_metal_tacker-ubuntu-bionic
     experimental:
       jobs:
-        - openstack-ansible-deploy-aio_metal_tacker-opensuse-150
+        - openstack-ansible-deploy-aio_metal_tacker-opensuse-15
