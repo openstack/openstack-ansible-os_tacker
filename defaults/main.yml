@@ -36,9 +36,9 @@ tacker_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_p
 tacker_package_state: "latest"
 tacker_pip_package_state: "latest"
 
-tacker_git_repo: https://git.openstack.org/openstack/tacker
+tacker_git_repo: https://opendev.org/openstack/tacker
 tacker_git_install_branch: master
-tacker_upper_constraints_url: "{{ requirements_git_url | default('https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt?h=' ~ requirements_git_install_branch | default('master')) }}"
+tacker_upper_constraints_url: "{{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}"
 tacker_git_constraints:
   - "git+{{ tacker_git_repo }}@{{ tacker_git_install_branch }}#egg=tacker"
   - "--constraint {{ tacker_upper_constraints_url }}"
