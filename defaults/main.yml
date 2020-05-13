@@ -157,12 +157,6 @@ tacker_heat_stack_retry_wait: 5
 # heat service paramter for tacker.conf
 heat_service_adminurl: "{{ tacker_service_publicuri_proto }}://{{ external_lb_vip_address }}:8004/v1"
 
-# This variable is used by the repo_build process to determine
-# which host group to check for members of before building the
-# pip packages required by this role. The value is picked up
-# by the py_pkgs lookup.
-tacker_role_project_group: tacker_all
-
 ## Tunable overrides
 tacker_tacker_conf_overrides: {}
 tacker_api_paste_ini_overrides: {}
