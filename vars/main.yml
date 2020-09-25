@@ -15,3 +15,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+_tacker_is_first_play_host: "{{ ('tacker_all' in group_names and inventory_hostname == (groups['tacker_all'] | intersect(ansible_play_hosts)) | first) | bool }}"

@@ -29,7 +29,7 @@
 
 - import_tasks: db_setup.yml
   when:
-    - inventory_hostname == groups['tacker_all'][0]
+    - _tacker_is_first_play_host
   vars:
     _oslodb_setup_host: "{{ tacker_db_setup_host }}"
     _oslodb_ansible_python_interpreter: "{{ tacker_db_setup_python_interpreter }}"
@@ -46,7 +46,7 @@
 
 - import_tasks: mq_setup.yml
   when:
-    - inventory_hostname == groups['tacker_all'][0]
+    - _tacker_is_first_play_host
   vars:
     _oslomsg_rpc_setup_host: "{{ tacker_oslomsg_rpc_setup_host }}"
     _oslomsg_rpc_userid: "{{ tacker_oslomsg_rpc_userid }}"
@@ -114,7 +114,7 @@
 
 - import_tasks: tacker_db_sync.yml
   when:
-    - inventory_hostname == groups['tacker_all'][0]
+    - _tacker_is_first_play_host
   tags:
     - tacker-install
 
@@ -145,7 +145,7 @@
         type: "{{ tacker_service_type }}"
         description: "{{ tacker_service_description }}"
   when:
-    - inventory_hostname == groups['tacker_all'][0]
+    - _tacker_is_first_play_host
   tags:
     - tacker-install
 
