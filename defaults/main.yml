@@ -23,7 +23,7 @@ debug: False
 tacker_venv_python_executable: "{{ openstack_venv_python_executable | default('python2') }}"
 
 # Enable/Disable Ceilometer
-tacker_ceilometer_enabled: False
+tacker_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
 
 # Set the host which will execute the shade modules
 # for the service setup. The host must already have
@@ -33,8 +33,7 @@ tacker_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_p
 
 # Set the package install state for distribution packages
 # Options are 'present' and 'latest'
-tacker_package_state: "latest"
-tacker_pip_package_state: "latest"
+tacker_package_state: "{{ package_state | default('latest') }}"
 
 tacker_git_repo: https://opendev.org/openstack/tacker
 tacker_git_install_branch: master
@@ -100,7 +99,7 @@ tacker_galera_database: tacker
 tacker_galera_user: tacker
 tacker_galera_use_ssl: "{{ galera_use_ssl | default(False) }}"
 tacker_galera_ssl_ca_cert: "{{ galera_ssl_ca_cert | default('/etc/ssl/certs/galera-ca.pem') }}"
-tacker_galera_port: 3306
+tacker_galera_port: "{{ galera_port | default('3306') }}"
 
 tacker_role_name: admin
 tacker_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
@@ -108,7 +107,7 @@ tacker_service_port: 9890
 tacker_program_name: tacker-server
 
 ## Service Type and Data
-tacker_service_region: RegionOne
+tacker_service_region: "{{ service_region | default('RegionOne') }}"
 tacker_service_name: tacker-server
 tacker_service_proto: http
 tacker_service_type: nfv-orchestration
@@ -137,7 +136,7 @@ tacker_service_user_domain_id: default
 tacker_service_user_name: tacker
 tacker_keystone_auth_plugin: password
 
-tacker_service_in_ldap: false
+tacker_service_in_ldap: "{{ service_ldap_backend_enabled | default(False) }}"
 
 ## Common pip packages
 tacker_pip_packages:
