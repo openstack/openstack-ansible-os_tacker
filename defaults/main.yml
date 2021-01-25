@@ -39,7 +39,6 @@ tacker_git_repo: https://opendev.org/openstack/tacker
 tacker_git_install_branch: master
 tacker_upper_constraints_url: "{{ requirements_git_url | default('https://releases.openstack.org/constraints/upper/' ~ requirements_git_install_branch | default('master')) }}"
 tacker_git_constraints:
-  - "git+{{ tacker_git_repo }}@{{ tacker_git_install_branch }}#egg=tacker"
   - "--constraint {{ tacker_upper_constraints_url }}"
 
 tacker_pip_install_args: "{{ pip_install_options | default('') }}"
@@ -146,7 +145,7 @@ tacker_pip_packages:
   - python-heatclient
   - python-tackerclient
   - systemd-python
-  - tacker
+  - "git+{{ tacker_git_repo }}@{{ tacker_git_install_branch }}#egg=tacker"
 
 tacker_config_options: --config-file {{ tacker_etc_dir }}/tacker.conf
 tacker_init_config_overrides: {}
