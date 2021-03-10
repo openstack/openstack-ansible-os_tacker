@@ -20,7 +20,7 @@
 debug: False
 
 #python venv executable
-tacker_venv_python_executable: "{{ openstack_venv_python_executable | default('python2') }}"
+tacker_venv_python_executable: "{{ openstack_venv_python_executable | default('python3') }}"
 
 # Enable/Disable Ceilometer
 tacker_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups['ceilometer_all'] | length > 0) }}"
