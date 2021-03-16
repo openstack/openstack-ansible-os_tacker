@@ -29,7 +29,7 @@ tacker_ceilometer_enabled: "{{ (groups['ceilometer_all'] is defined) and (groups
 # for the service setup. The host must already have
 # clouds.yaml properly configured.
 tacker_service_setup_host: "{{ openstack_service_setup_host | default('localhost') }}"
-tacker_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default((tacker_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}"
+tacker_service_setup_host_python_interpreter: "{{ openstack_service_setup_host_python_interpreter | default((tacker_service_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}"
 
 # Set the package install state for distribution packages
 # Options are 'present' and 'latest'
@@ -92,7 +92,7 @@ tacker_optional_oslomsg_amqp1_pip_packages:
 
 ## Database info
 tacker_db_setup_host: "{{ openstack_db_setup_host | default('localhost') }}"
-tacker_db_setup_python_interpreter: "{{ openstack_db_setup_python_interpreter | default((tacker_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_python['executable'])) }}"
+tacker_db_setup_python_interpreter: "{{ openstack_db_setup_python_interpreter | default((tacker_db_setup_host == 'localhost') | ternary(ansible_playbook_python, ansible_facts['python']['executable'])) }}"
 tacker_galera_address: "{{ galera_address | default('127.0.0.1') }}"
 tacker_galera_database: tacker
 tacker_galera_user: tacker
