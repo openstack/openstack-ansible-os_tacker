@@ -23,3 +23,12 @@
     daemon_reload: yes
   listen:
     - "venv changed"
+
+# NOTE (noonedeadpunk): Remove this task after Xena release
+- name: Remove obsoleted policy.json
+  file:
+    path: "{{ tacker_etc_dir }}/policy.json"
+    state: absent
+  listen:
+    - "Restart tacker services"
+    - "venv changed"

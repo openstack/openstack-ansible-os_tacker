@@ -37,12 +37,30 @@
       dest: "{{ tacker_etc_dir }}/rootwrap.conf"
       config_overrides: "{{ tacker_rootwrap_overrides }}"
       config_type: "ini"
-    - src: "policy.json.j2"
-      dest: "{{ tacker_etc_dir }}/policy.json"
-      config_overrides: "{{ tacker_policy_overrides }}"
-      config_type: "json"
   notify:
     - Restart tacker services
+
+- name: Implement policy.yaml if there are overrides configured
+  config_template:
+    content: "{{ tacker_policy_overrides }}"
+    dest: "{{ tacker_etc_dir }}/policy.yaml"
+    owner: "{{ tacker_system_user_name }}"
+    group: "{{ tacker_system_group_name }}"
+    mode: "0644"
+    config_type: yaml
+  when:
+    - tacker_policy_overrides | length > 0
+  tags:
+    - tacker-policy-override
+
+- name: Remove legacy policy.yaml file
+  file:
+    path: "{{ tacker_etc_dir }}/policy.yaml"
+    state: absent
+  when:
+    - tacker_policy_overrides | length == 0
+  tags:
+    - tacker-policy-override
 
 - name: Copy rootwrap filters
   copy:
