@@ -69,7 +69,7 @@ service_token_roles = {{ tacker_role_name }}
 # be set in the corresponding core plugin '.ini' file. However, it is suggested
 # to put the [database] section and its connection attribute in this
 # configuration file.
-connection = mysql+pymysql://{{ tacker_galera_user }}:{{ tacker_container_mysql_password }}@{{ tacker_galera_address }}/{{ tacker_galera_database }}?charset=utf8{% if tacker_galera_use_ssl | bool %}&ssl_ca={{ tacker_galera_ssl_ca_cert }}{% endif %}
+connection = mysql+pymysql://{{ tacker_galera_user }}:{{ tacker_container_mysql_password }}@{{ tacker_galera_address }}/{{ tacker_galera_database }}?charset=utf8{% if tacker_galera_use_ssl | bool %}&ssl_verify_cert=true{% if tacker_galera_ssl_ca_cert | length > 0 %}&ssl_ca={{ tacker_galera_ssl_ca_cert }}{% endif %}{% endif %}
 
 
 [tacker]
