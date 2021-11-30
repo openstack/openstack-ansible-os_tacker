@@ -16,7 +16,7 @@
 # limitations under the License.
 
 - name: Drop tacker Config(s)
-  config_template:
+  openstack.config_template.config_template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ tacker_system_user_name }}"
@@ -41,7 +41,7 @@
     - Restart tacker services
 
 - name: Implement policy.yaml if there are overrides configured
-  config_template:
+  openstack.config_template.config_template:
     content: "{{ tacker_policy_overrides }}"
     dest: "{{ tacker_etc_dir }}/policy.yaml"
     owner: "{{ tacker_system_user_name }}"
