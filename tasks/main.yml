@@ -27,7 +27,12 @@
   tags:
     - always
 
-- import_tasks: db_setup.yml
+- include_role:
+    name: openstack.osa.db_setup
+    apply:
+      tags:
+        - common-db
+        - tacker-config
   when:
     - _tacker_is_first_play_host
   vars:
@@ -41,10 +46,14 @@
           - username: "{{ tacker_galera_user }}"
             password: "{{ tacker_container_mysql_password }}"
   tags:
-    - common-db
-    - tacker-config
+    - always
 
-- import_tasks: mq_setup.yml
+- include_role:
+    name: openstack.osa.mq_setup
+    apply:
+      tags:
+        - common-mq
+        - tacker-config
   when:
     - _tacker_is_first_play_host
   vars:
@@ -59,8 +68,7 @@
     _oslomsg_notify_vhost: "{{ tacker_oslomsg_notify_vhost }}"
     _oslomsg_notify_transport: "{{ tacker_oslomsg_notify_transport }}"
   tags:
-    - common-mq
-    - tacker-config
+    - always
 
 - import_tasks: tacker_pre_install.yml
   tags:
@@ -118,7 +126,12 @@
   tags:
     - tacker-install
 
-- import_tasks: service_setup.yml
+- include_role:
+    name: openstack.osa.service_setup
+    apply:
+      tags:
+        - common-service
+        - tacker-config
   vars:
     _service_adminuri_insecure: "{{ keystone_service_adminuri_insecure }}"
     _service_in_ldap: "{{ tacker_service_in_ldap }}"
@@ -147,7 +160,7 @@
   when:
     - _tacker_is_first_play_host
   tags:
-    - tacker-install
+    - always
 
 - name: Flush handlers
   meta: flush_handlers
