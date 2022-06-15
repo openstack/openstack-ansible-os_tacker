@@ -55,8 +55,9 @@ auth_type = {{ tacker_keystone_auth_plugin }}
 insecure = {{ keystone_service_internaluri_insecure }}
 region_name = {{ tacker_service_region }}
 interface = internal
-service_token_roles_required = True
-service_token_roles = {{ tacker_role_name }}
+service_token_roles_required = {{ tacker_service_token_roles_required | bool }}
+service_token_roles = {{ tacker_service_token_roles | join(',') }}
+service_type = {{ tacker_service_type }}
 
 [database]
 # This line MUST be changed to actually run the plugin.

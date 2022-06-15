@@ -146,7 +146,7 @@
     _service_users:
       - name: "{{ tacker_service_user_name }}"
         password: "{{ tacker_service_password }}"
-        role: "{{ tacker_role_name }}"
+        role: "{{ tacker_service_role_names }}"
     _service_endpoints:
       - service: "{{ tacker_service_name }}"
         interface: "public"
