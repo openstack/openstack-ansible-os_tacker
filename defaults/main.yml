@@ -111,6 +111,7 @@ tacker_db_connection_recycle_time: "{{ openstack_db_connection_recycle_time | de
 tacker_bind_address: "{{ openstack_service_bind_address | default('0.0.0.0') }}"
 tacker_service_port: 9890
 tacker_program_name: tacker-server
+tacker_conductor_program_name: tacker-conductor
 
 ## Service Type and Data
 tacker_service_region: "{{ service_region | default('RegionOne') }}"
@@ -128,6 +129,21 @@ tacker_service_registry_proto: "{{ tacker_service_proto }}"
 tacker_service_publicuri_proto: "{{ openstack_service_publicuri_proto | default(tacker_service_proto) }}"
 tacker_service_adminuri_proto: "{{ openstack_service_adminuri_proto | default(tacker_service_proto) }}"
 tacker_service_internaluri_proto: "{{ openstack_service_internaluri_proto | default(tacker_service_proto) }}"
+
+tacker_services:
+  tacker-server:
+    group: tacker_server
+    service_name: "{{ tacker_service_name }}"
+    enabled: yes
+    state: started
+    execstarts: "{{ tacker_bin }}/{{ tacker_program_name }} {{ tacker_config_options|default('') }}"
+    config_overrides: "{{ tacker_init_config_overrides }}"
+  tacker-conductor:
+    group: tacker_server
+    service_name: "{{ tacker_conductor_program_name }}"
+    enabled: yes
+    execstarts: "{{ tacker_bin }}/{{ tacker_conductor_program_name }} {{ tacker_conductor_config_options|default('') }}"
+    config_overrides: "{{ tacker_conductor_init_config_overrides }}"
 
 ## Barbican service
 barbican_keys_backend: false
@@ -161,7 +177,9 @@ tacker_pip_packages:
   - "git+{{ tacker_git_repo }}@{{ tacker_git_install_branch }}#egg=tacker"
 
 tacker_config_options: --config-file {{ tacker_etc_dir }}/tacker.conf
+tacker_conductor_config_options: "{{ tacker_config_options }}"
 tacker_init_config_overrides: {}
+tacker_conductor_init_config_overrides: {}
 
 ## tacker config
 tacker_heat_stack_retires: 60
