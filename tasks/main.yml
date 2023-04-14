@@ -77,6 +77,26 @@
   tags:
     - tacker-install
 
+- name: Create and install SSL certificates
+  include_role:
+    name: pki
+    tasks_from: main_certs.yml
+    apply:
+      tags:
+        - tacker-config
+        - pki
+  vars:
+    pki_setup_host: "{{ tacker_pki_setup_host }}"
+    pki_dir: "{{ tacker_pki_dir }}"
+    pki_create_certificates: "{{ tacker_user_ssl_cert is not defined and tacker_user_ssl_key is not defined }}"
+    pki_regen_cert: "{{ tacker_pki_regen_cert }}"
+    pki_certificates: "{{ tacker_pki_certificates }}"
+    pki_install_certificates: "{{ tacker_pki_install_certificates }}"
+  when:
+    - tacker_backend_ssl
+  tags:
+    - always
+
 - name: Install the python venv
   import_role:
     name: "python_venv_build"

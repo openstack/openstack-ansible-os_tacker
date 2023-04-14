@@ -40,6 +40,12 @@ service_plugins = nfvo,vnfm
 # Supported values are 'keystone'(default), 'noauth'.
 auth_strategy = keystone
 
+{% if tacker_backend_ssl | bool %}
+use_ssl = True
+ssl_cert_file = {{ tacker_ssl_cert }}
+ssl_key_file = {{ tacker_ssl_key }}
+{% endif %}
+
 [nfvo_vim]
 vim_drivers = openstack
 

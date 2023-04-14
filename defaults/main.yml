@@ -194,3 +194,51 @@ tacker_tacker_conf_overrides: {}
 tacker_api_paste_ini_overrides: {}
 tacker_policy_overrides: {}
 tacker_rootwrap_overrides: {}
+
+###
+### Backend TLS
+###
+
+# Define if communication between haproxy and service backends should be
+# encrypted with TLS.
+tacker_backend_ssl: "{{ openstack_service_backend_ssl | default(False) }}"
+
+# Storage location for SSL certificate authority
+tacker_pki_dir: "{{ openstack_pki_dir | default('/etc/openstack_deploy/pki') }}"
+
+# Delegated host for operating the certificate authority
+tacker_pki_setup_host: "{{ openstack_pki_setup_host | default('localhost') }}"
+
+# tacker server certificate
+tacker_pki_keys_path: "{{ tacker_pki_dir ~ '/certs/private/' }}"
+tacker_pki_certs_path: "{{ tacker_pki_dir ~ '/certs/certs/' }}"
+tacker_pki_intermediate_cert_name: "{{ openstack_pki_service_intermediate_cert_name | default('ExampleCorpIntermediate') }}"
+tacker_pki_regen_cert: ''
+tacker_pki_san: "{{ openstack_pki_san | default('DNS:' ~ ansible_facts['hostname'] ~ ',IP:' ~ management_address) }}"
+tacker_pki_certificates:
+  - name: "tacker_{{ ansible_facts['hostname'] }}"
+    provider: ownca
+    cn: "{{ ansible_facts['hostname'] }}"
+    san: "{{ tacker_pki_san }}"
+    signed_by: "{{ tacker_pki_intermediate_cert_name }}"
+
+# tacker destination files for SSL certificates
+tacker_ssl_cert: /etc/tacker/tacker.pem
+tacker_ssl_key: /etc/tacker/tacker.key
+
+# Installation details for SSL certificates
+tacker_pki_install_certificates:
+  - src: "{{ tacker_user_ssl_cert | default(tacker_pki_certs_path ~ 'tacker_' ~ ansible_facts['hostname'] ~ '-chain.crt') }}"
+    dest: "{{ tacker_ssl_cert }}"
+    owner: "{{ tacker_system_user_name }}"
+    group: "{{ tacker_system_user_name }}"
+    mode: "0644"
+  - src: "{{ tacker_user_ssl_key | default(tacker_pki_keys_path ~ 'tacker_' ~ ansible_facts['hostname'] ~ '.key.pem') }}"
+    dest: "{{ tacker_ssl_key }}"
+    owner: "{{ tacker_system_user_name }}"
+    group: "{{ tacker_system_user_name }}"
+    mode: "0600"
+
+# Define user-provided SSL certificates
+#tacker_user_ssl_cert: <path to cert on ansible deployment host>
+#tacker_user_ssl_key: <path to cert on ansible deployment host>

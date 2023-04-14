@@ -27,3 +27,4 @@
   listen:
     - "venv changed"
     - "systemd service changed"
+    - "cert installed"
