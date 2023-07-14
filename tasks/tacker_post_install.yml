@@ -68,6 +68,7 @@
     dest: "{{ tacker_etc_dir }}/rootwrap.d/"
     owner: "root"
     group: "root"
+    mode: "0644"
   with_fileglob:
     - rootwrap.d/*
   notify:

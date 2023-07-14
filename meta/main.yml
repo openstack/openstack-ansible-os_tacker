@@ -21,20 +21,21 @@ galaxy_info:
   description: Tacker deployment with OpenStack Ansible
   company: OpenStack
   license: Apache2
-
-  min_ansible_version: 1.9
+  role_name: os_tacker
+  namespace: openstack
+  min_ansible_version: "2.10"
 
   platforms:
-  - name: Debian
-    versions:
-    - buster
-  - name: Ubuntu
-    versions:
-      - bionic
-      - focal
-  - name: EL
-    versions:
-    - 8
+    - name: Debian
+      versions:
+        - bullseye
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+    - name: EL
+      versions:
+        - "9"
   galaxy_tags:
     - cloud
     - openstack
