@@ -17,3 +17,15 @@
 
 _tacker_is_first_play_host: >-
   {{ ('tacker_all' in group_names and inventory_hostname == (groups['tacker_all'] | intersect(ansible_play_hosts)) | first) | bool }}
+
+_tacker_oslomsg_rpc_vhost_conf: >-
+  {{
+    (tacker_oslomsg_rpc_vhost is string) | ternary(
+      tacker_oslomsg_rpc_vhost, tacker_oslomsg_rpc_vhost | selectattr('state', 'eq', 'present') | map(attribute='name') | first)
+  }}
+
+_tacker_oslomsg_notify_vhost_conf: >-
+  {{
+    (tacker_oslomsg_notify_vhost is string) | ternary(
+      tacker_oslomsg_notify_vhost, tacker_oslomsg_notify_vhost | selectattr('state', 'eq', 'present') | map(attribute='name') | first)
+  }}
