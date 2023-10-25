@@ -3,4 +3,6 @@
   hosts: tacker_all
   user: root
   roles:
-    - { role: "os_tacker", tags: [ "os-tacker" ] }
+    - role: "os_tacker"
+      tags:
+        - "os-tacker"
