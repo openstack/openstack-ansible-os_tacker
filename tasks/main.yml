@@ -74,6 +74,7 @@
     _oslomsg_notify_vhost: "{{ tacker_oslomsg_notify_vhost }}"
     _oslomsg_notify_transport: "{{ tacker_oslomsg_notify_transport }}"
     _oslomsg_notify_policies: "{{ tacker_oslomsg_notify_policies }}"
+    _oslomsg_notify_configure: "{{ tacker_oslomsg_notify_configure }}"
   tags:
     - always
 
