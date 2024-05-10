@@ -75,6 +75,7 @@ tacker_oslomsg_rpc_servers: "{{ oslomsg_rpc_servers | default('127.0.0.1') }}"
 tacker_oslomsg_rpc_port: "{{ oslomsg_rpc_port | default('5672') }}"
 tacker_oslomsg_rpc_use_ssl: "{{ oslomsg_rpc_use_ssl | default(False) }}"
 tacker_oslomsg_rpc_userid: tacker
+tacker_oslomsg_rpc_policies: []
 # vhost name depends on value of oslomsg_rabbit_quorum_queues. In case quorum queues
 # are not used - vhost name will be prefixed with leading `/`.
 tacker_oslomsg_rpc_vhost:
@@ -97,6 +98,7 @@ tacker_oslomsg_notify_password: "{{ tacker_oslomsg_rpc_password }}"
 tacker_oslomsg_notify_vhost: "{{ tacker_oslomsg_rpc_vhost }}"
 tacker_oslomsg_notify_ssl_version: "{{ oslomsg_notify_ssl_version | default('TLSv1_2') }}"
 tacker_oslomsg_notify_ssl_ca_file: "{{ oslomsg_notify_ssl_ca_file | default('') }}"
+tacker_oslomsg_notify_policies: []
 
 ## RabbitMQ integration
 tacker_oslomsg_rabbit_quorum_queues: "{{ oslomsg_rabbit_quorum_queues | default(True) }}"
