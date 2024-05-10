@@ -97,6 +97,10 @@ openstack = {{ tacker_etc_dir }}/vim/fernet_keys
 [oslo_messaging_rabbit]
 ssl = {{ tacker_oslomsg_notify_use_ssl | bool }}
 rabbit_quorum_queue = {{ tacker_oslomsg_rabbit_quorum_queues }}
+rabbit_transient_quorum_queue = {{ tacker_oslomsg_rabbit_transient_quorum_queues }}
+rabbit_qos_prefetch_count = {{ tacker_oslomsg_rabbit_qos_prefetch_count }}
+use_queue_manager = {{ tacker_oslomsg_rabbit_queue_manager }}
+rabbit_stream_fanout = {{ tacker_oslomsg_rabbit_stream_fanout }}
 rabbit_quorum_delivery_limit = {{ tacker_oslomsg_rabbit_quorum_delivery_limit }}
 rabbit_quorum_max_memory_bytes = {{ tacker_oslomsg_rabbit_quorum_max_memory_bytes }}
 
