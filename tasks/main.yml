@@ -125,6 +125,7 @@
   tags:
     - tacker-install
     - tacker-config
+    - post-install
 
 - name: Run the systemd service role
   import_role:
