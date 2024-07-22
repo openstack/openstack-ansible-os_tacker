@@ -16,7 +16,7 @@
 # limitations under the License.
 
 _tacker_is_first_play_host: >-
-  {{ ('tacker_all' in group_names and inventory_hostname == (groups['tacker_all'] | intersect(ansible_play_hosts)) | first) | bool }}
+  {{ ('tacker_all' in group_names and inventory_hostname == (groups['tacker_all'] | select('in', ansible_play_hosts)) | first) | bool }}
 
 _tacker_oslomsg_rpc_vhost_conf: >-
   {{
