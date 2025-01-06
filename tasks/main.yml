@@ -112,7 +112,7 @@
     venv_install_destination_path: "{{ tacker_bin | dirname }}"
     venv_install_distro_package_list: "{{ tacker_distro_packages }}"
     venv_pip_install_args: "{{ tacker_pip_install_args }}"
-    venv_pip_packages: "{{ tacker_pip_packages | union((tacker_oslomsg_amqp1_enabled | bool) | ternary(tacker_optional_oslomsg_amqp1_pip_packages, [])) }}"
+    venv_pip_packages: "{{ tacker_pip_packages }}"
     venv_facts_when_changed:
       - section: "tacker"
         option: "venv_tag"

@@ -110,13 +110,6 @@ tacker_oslomsg_rabbit_queue_manager: "{{ oslomsg_rabbit_queue_manager | default(
 tacker_oslomsg_rabbit_quorum_delivery_limit: "{{ oslomsg_rabbit_quorum_delivery_limit | default(0) }}"
 tacker_oslomsg_rabbit_quorum_max_memory_bytes: "{{ oslomsg_rabbit_quorum_max_memory_bytes | default(0) }}"
 
-## (Qdrouterd) integration
-# TODO(ansmith): Change structure when more backends will be supported
-tacker_oslomsg_amqp1_enabled: "{{ tacker_oslomsg_rpc_transport == 'amqp' }}"
-
-tacker_optional_oslomsg_amqp1_pip_packages:
-  - oslo.messaging[amqp1]
-
 ## Database info
 tacker_db_setup_host: "{{ openstack_db_setup_host | default('localhost') }}"
 tacker_db_setup_python_interpreter: >-
