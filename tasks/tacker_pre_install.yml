@@ -16,13 +16,13 @@
 # limitations under the License.
 
 - name: Create the system group
-  group:
+  ansible.builtin.group:
     name: "{{ tacker_system_group_name }}"
     state: "present"
     system: "yes"
 
 - name: Create the tacker system user
-  user:
+  ansible.builtin.user:
     name: "{{ tacker_system_user_name }}"
     group: "{{ tacker_system_group_name }}"
     comment: "{{ tacker_system_comment }}"
@@ -32,7 +32,7 @@
     home: "{{ tacker_system_user_home }}"
 
 - name: Create tacker directories
-  file:
+  ansible.builtin.file:
     path: "{{ item.path }}"
     state: directory
     owner: "{{ item.owner | default(tacker_system_user_name) }}"

@@ -54,7 +54,7 @@
     - tacker-policy-override
 
 - name: Remove legacy policy.yaml file
-  file:
+  ansible.builtin.file:
     path: "{{ tacker_etc_dir }}/policy.yaml"
     state: absent
   when:
@@ -63,7 +63,7 @@
     - tacker-policy-override
 
 - name: Copy rootwrap filters
-  copy:
+  ansible.builtin.copy:
     src: "{{ item }}"
     dest: "{{ tacker_etc_dir }}/rootwrap.d/"
     owner: "root"
