@@ -18,9 +18,9 @@
 - name: Restart tacker services
   service:
     name: "{{ item }}"
-    enabled: yes
+    enabled: true
     state: restarted
-    daemon_reload: yes
+    daemon_reload: true
   with_items:
     - "{{ tacker_service_name }}"
     - "{{ tacker_conductor_program_name }}"

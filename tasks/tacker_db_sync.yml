@@ -16,9 +16,9 @@
 - name: Perform a tacker DB sync
   command: "{{ tacker_bin }}/tacker-db-manage
     --config-file {{ tacker_etc_dir }}/tacker.conf upgrade head"
-  become: yes
+  become: true
   become_user: "{{ tacker_system_user_name }}"
-  changed_when: False
+  changed_when: false
   tags:
     - tacker-db-sync
     - tacker-setup
