@@ -14,7 +14,7 @@
 # limitations under the License.
 
 - name: Perform a tacker DB sync
-  command: "{{ tacker_bin }}/tacker-db-manage
+  ansible.builtin.command: "{{ tacker_bin }}/tacker-db-manage
     --config-file {{ tacker_etc_dir }}/tacker.conf upgrade head"
   become: true
   become_user: "{{ tacker_system_user_name }}"
