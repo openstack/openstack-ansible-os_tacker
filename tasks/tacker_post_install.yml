@@ -40,7 +40,7 @@
   notify:
     - Restart tacker services
 
-- name: Implement policy.yaml if there are overrides configured
+- name: Implement policy.yaml files
   openstack.config_template.config_template:
     content: "{{ tacker_policy_overrides }}"
     dest: "{{ tacker_etc_dir }}/policy.yaml"
@@ -49,16 +49,7 @@
     mode: "0644"
     config_type: yaml
   when:
-    - tacker_policy_overrides | length > 0
-  tags:
-    - tacker-policy-override
-
-- name: Remove legacy policy.yaml file
-  ansible.builtin.file:
-    path: "{{ tacker_etc_dir }}/policy.yaml"
-    state: absent
-  when:
-    - tacker_policy_overrides | length == 0
+    - tacker_services['tacker-server']['group'] in group_names
   tags:
     - tacker-policy-override
 
