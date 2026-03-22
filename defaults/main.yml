@@ -232,12 +232,14 @@ tacker_pki_keys_path: "{{ tacker_pki_dir ~ '/certs/private/' }}"
 tacker_pki_certs_path: "{{ tacker_pki_dir ~ '/certs/certs/' }}"
 tacker_pki_intermediate_cert_name: "{{ openstack_pki_service_intermediate_cert_name | default('ExampleCorpIntermediate') }}"
 tacker_pki_regen_cert: ""
-tacker_pki_san: "{{ openstack_pki_san | default('DNS:' ~ ansible_facts['hostname'] ~ ',IP:' ~ management_address) }}"
+tacker_pki_san: "{{ openstack_pki_san | default({'dns': [ansible_facts['hostname']], 'ip': [management_address]}) }}"
+tacker_pki_backend: "{{ openstack_pki_backend | default('standalone') }}"
 tacker_pki_certificates:
   - name: "tacker_{{ ansible_facts['hostname'] }}"
-    provider: ownca
     cn: "{{ ansible_facts['hostname'] }}"
     san: "{{ tacker_pki_san }}"
+    # standalone backend only
+    provider: ownca
     signed_by: "{{ tacker_pki_intermediate_cert_name }}"
 
 # tacker destination files for SSL certificates
@@ -246,17 +248,21 @@ tacker_ssl_key: /etc/tacker/tacker.key
 
 # Installation details for SSL certificates
 tacker_pki_install_certificates:
-  - src: "{{ tacker_user_ssl_cert | default(tacker_pki_certs_path ~ 'tacker_' ~ ansible_facts['hostname'] ~ '-chain.crt') }}"
+  - name: "tacker_{{ ansible_facts['hostname'] }}"
+    type: "certificate_chain"
     dest: "{{ tacker_ssl_cert }}"
     owner: "{{ tacker_system_user_name }}"
     group: "{{ tacker_system_user_name }}"
-    mode: "0644"
-  - src: "{{ tacker_user_ssl_key | default(tacker_pki_keys_path ~ 'tacker_' ~ ansible_facts['hostname'] ~ '.key.pem') }}"
+    # standalone backend only
+    src: "{{ tacker_user_ssl_cert | default(tacker_pki_certs_path ~ 'tacker_' ~ ansible_facts['hostname'] ~ '-chain.crt') }}"
+  - name: "tacker_{{ ansible_facts['hostname'] }}"
+    type: "private_key"
     dest: "{{ tacker_ssl_key }}"
     owner: "{{ tacker_system_user_name }}"
     group: "{{ tacker_system_user_name }}"
-    mode: "0600"
+    # standalone backend only
+    src: "{{ tacker_user_ssl_key | default(tacker_pki_keys_path ~ 'tacker_' ~ ansible_facts['hostname'] ~ '.key.pem') }}"
 
 # Define user-provided SSL certificates
-# tacker_user_ssl_cert: <path to cert on ansible deployment host>
-# tacker_user_ssl_key: <path to cert on ansible deployment host>
+tacker_user_ssl_cert: ""
+tacker_user_ssl_key: ""
