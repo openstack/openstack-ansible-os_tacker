@@ -193,7 +193,7 @@ tacker_pip_packages:
   - python-heatclient
   - python-tackerclient
   - systemd-python
-  - "git+{{ tacker_git_repo }}@{{ tacker_git_install_branch }}#egg=tacker"
+  - "tacker@git+{{ tacker_git_repo }}@{{ tacker_git_install_branch }}"
 
 tacker_config_options: --config-file {{ tacker_etc_dir }}/tacker.conf
 tacker_conductor_config_options: "{{ tacker_config_options }}"
